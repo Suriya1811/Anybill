@@ -1,5 +1,6 @@
 // src/module-1/home/components/Navbar.tsx
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef  } from 'react';
+import { Link } from 'react-router-dom';
 import '../styles/Navbar.css'; // Import the CSS file relative to its location
 
 const Navbar: React.FC = () => {
@@ -48,9 +49,9 @@ const Navbar: React.FC = () => {
       <div className="nav-container">
         {/* Logo */}
         <div className="nav-logo">
-          <a href="#" className="logo-link">
-            <span className="logo-text">Anybill</span>
-          </a>
+          <Link to="/">
+            <span className="logo-text">Anybill</span></Link>
+          
         </div>
 
         {/* Mobile Menu Button */}
@@ -111,7 +112,8 @@ const Navbar: React.FC = () => {
             </div>
           </li>
           <li className="nav-item">
-            <a href="#" className="nav-link">Pricing</a>
+              
+<Link to="/pricing-faq">Pricing & FAQ</Link>
           </li>
         </ul>
 
