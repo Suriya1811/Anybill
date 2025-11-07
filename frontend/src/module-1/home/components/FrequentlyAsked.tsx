@@ -130,28 +130,23 @@ const FrequentlyAsked: React.FC = () => {
 
         <div className="faq-answers">
           <div className="answer-container">
-            {faqs.map((faq, index) => (
-              <div
-                key={index}
-                className={`answer-content ${activeIndex === index ? 'active' : ''}`}
-                style={{ display: activeIndex === index ? 'block' : 'none' }}
-              >
-                <div dangerouslySetInnerHTML={{ __html: faq.answer }} />
-              </div>
-            ))}
-          </div>
-          
-          <div className="dollar-animation">
-            <div className="dollar-symbol">$</div>
-            <div className="dollar-symbol">$</div>
-            <div className="dollar-symbol">$</div>
-            <div className="dollar-symbol">$</div>
-            <div className="dollar-symbol">$</div>
-            <div className="dollar-symbol">$</div>
-            <div className="dollar-symbol">$</div>
-            <div className="dollar-symbol">$</div>
-            <div className="dollar-symbol">$</div>
-            <div className="dollar-symbol">$</div>
+            {/* Animated particles inside the answer box */}
+            <div className="answer-particles">
+              <div></div>
+              <div></div>
+            </div>
+
+            <div className="answer-content-wrapper">
+              {faqs.map((faq, index) => (
+                <div
+                  key={index}
+                  className={`answer-content ${activeIndex === index ? 'active' : ''}`}
+                  style={{ display: activeIndex === index ? 'block' : 'none' }}
+                >
+                  <div dangerouslySetInnerHTML={{ __html: faq.answer }} />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

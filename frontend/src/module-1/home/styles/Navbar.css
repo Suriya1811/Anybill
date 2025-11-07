@@ -1,160 +1,116 @@
-/* src/module-1/home/styles/Navbar.css */
-/* Reset & Base Styles */
-html, body {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  width: 100%;
-  overflow-x: hidden; /* Prevent horizontal overflow */
-}
+/* =====================================================
+   Anybill Navbar - Premium Glass Edition
+   ===================================================== */
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  background-color: #f9fafb;
-}
-
-/* Navbar Container */
 .navbar {
-  background-color: #ffffff;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  position: sticky; /* Fixed position */
+  position: sticky;
   top: 0;
-  z-index: 1000;
-  width: 100vw; /* Full viewport width */
-  left: 0;
-  /* Ensure it doesn't cause horizontal scroll */
-  min-width: 100%;
-  /* Important for fixing the layout */
-  transform: translateZ(0); /* Hardware acceleration hint */
-}
-
-.nav-container {
   width: 100%;
-  max-width: 1200px; /* Max width for content */
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.4s ease;
+}
+
+.navbar.scrolled {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.1);
+}
+
+/* -----------------------------------------------
+   Container
+   ----------------------------------------------- */
+.nav-container {
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 1.5rem;
+  height: 70px;
   display: flex;
-  justify-content: space-between; /* Push logo to left, CTA buttons to right */
+  justify-content: space-between;
   align-items: center;
-  height: 60px;
-  /* Ensure padding doesn't cause overflow */
-  box-sizing: border-box;
+  transition: height 0.3s ease;
 }
 
-/* Logo */
-.nav-logo a {
-  text-decoration: none;
-  color: #8BC34A; /* Pista Green for Anybill */
-  font-size: 1.3rem;
-  font-weight: 600;
+/* -----------------------------------------------
+   Logo
+   ----------------------------------------------- */
+.nav-logo {
+  font-size: 1.6rem;
+  font-weight: 700;
   letter-spacing: -0.5px;
-  display: flex;
-  align-items: center;
-  padding-right: 20px; /* Space after logo */
-}
-
-.logo-text {
-  /* Placeholder for logo */
-  /* Adjust based on your actual logo */
-}
-
-/* Hamburger Menu Toggle */
-.nav-toggle {
-  display: none;
-  flex-direction: column;
+  background: linear-gradient(90deg, #8bc34a, #689f38);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   cursor: pointer;
-  padding: 5px;
-  margin-left: auto;
 }
 
-.hamburger {
-  width: 20px;
-  height: 2px;
-  background-color: #333;
-  margin: 3px 0;
-  transition: 0.3s;
-  transform-origin: center;
-  border-radius: 1px;
+.nav-logo .logo-text {
+  text-decoration: none;
+  color: inherit;
 }
 
-.hamburger.open:nth-child(1) {
-  transform: rotate(45deg) translate(4px, 4px);
-}
-
-.hamburger.open:nth-child(2) {
-  opacity: 0;
-}
-
-.hamburger.open:nth-child(3) {
-  transform: rotate(-45deg) translate(4px, -4px);
-}
-
-/* Navigation Menu */
+/* -----------------------------------------------
+   Menu
+   ----------------------------------------------- */
 .nav-menu {
   display: flex;
-  list-style: none;
   align-items: center;
-  gap: 20px; /* Consistent spacing between items */
-  width: auto;
-  flex-grow: 1; /* Allow it to grow and fill available space */
-  justify-content: flex-start; /* Align links to the left */
+  list-style: none;
+  gap: 0.8rem;
+  margin: 0;
+  padding: 0;
 }
 
 .nav-item {
   position: relative;
-  margin: 0;
 }
 
 .nav-link {
   text-decoration: none;
-  color: #333;
-  font-weight: 500;
+  color: #1f2937;
+  padding: 10px 14px;
+  border-radius: 6px;
   font-size: 0.95rem;
-  padding: 8px 12px;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  white-space: nowrap;
-  letter-spacing: 0.1px;
+  font-weight: 500;
+  transition: all 0.25s ease;
 }
 
 .nav-link:hover {
-  color: #007bff;
-  background-color: #f8f9fa;
+  color: #8bc34a;
+  background-color: rgba(139, 195, 74, 0.08);
 }
 
-/* Dropdown Arrow */
+/* -----------------------------------------------
+   Dropdown
+   ----------------------------------------------- */
+.dropdown-container {
+  position: relative;
+}
+
 .dropdown-arrow {
-  margin-left: 5px;
-  font-size: 0.7em;
-  transition: transform 0.2s ease;
-  color: #666;
+  margin-left: 4px;
+  transition: transform 0.3s ease;
 }
 
 .dropdown-arrow.rotated {
   transform: rotate(180deg);
 }
 
-/* Dropdown Menu Base */
 .dropdown-menu {
   position: absolute;
   top: 100%;
   left: 0;
-  background-color: #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
   border-radius: 8px;
-  overflow: hidden;
+  min-width: 220px;
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
-  transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
-  z-index: 1001;
-  list-style: none;
-  padding: 8px 0;
-  margin-top: 5px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  min-width: 180px; /* Minimum width for dropdown */
+  transition: all 0.3s ease;
+  z-index: 999;
 }
 
 .dropdown-menu.show {
@@ -165,166 +121,236 @@ body {
 
 .dropdown-link {
   display: block;
-  padding: 10px 20px;
+  padding: 10px 18px;
+  color: #374151;
   text-decoration: none;
-  color: #333;
-  font-weight: 400;
   font-size: 0.9rem;
-  transition: background-color 0.2s ease;
-  letter-spacing: 0.1px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
 }
 
 .dropdown-link:hover {
-  background-color: #f8f9fa;
-  color: #007bff;
+  background: rgba(139, 195, 74, 0.08);
+  color: #689f38;
 }
 
-/* CTA Buttons */
+/* Two-Column Layout for Solutions */
+.solutions-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  padding: 0.8rem;
+}
+
+.column h4 {
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+/* -----------------------------------------------
+   CTA Buttons
+   ----------------------------------------------- */
 .nav-cta-buttons {
   display: flex;
   align-items: center;
-  gap: 10px; /* Space between CTA buttons */
+  gap: 10px;
 }
 
-.login {
-  color: #333;
+.nav-link.login {
+  background: linear-gradient(90deg, #8bc34a, #aed581);
+  color: white;
   border: none;
-  background-color: transparent;
+  box-shadow: 0 4px 12px rgba(139, 195, 74, 0.25);
 }
 
-.login:hover {
-  color: #007bff;
-  background-color: #f8f9fa;
+.nav-link.login:hover {
+  background: linear-gradient(90deg, #7cb342, #9ccc65);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 195, 74, 0.35);
 }
 
-.book-demo {
-  color: #007bff;
-  border: 1px solid #007bff;
-  background-color: transparent;
-  border-radius: 20px; /* Rounded corners for button */
-  padding: 8px 16px;
+.nav-link.register {
+  border: 1.5px solid #8bc34a;
+  color: #8bc34a;
+  background: transparent;
+  transition: all 0.3s ease;
 }
 
-.book-demo:hover {
-  background-color: #e7f3ff;
+.nav-link.register:hover {
+  background: #8bc34a;
+  color: #fff;
+  transform: translateY(-2px);
 }
 
-.start-billing {
-  background-color: #8BC34A; /* Pista Green */
-  color: #ffffff;
+.nav-link.book-demo {
+  background: #4caf50;
+  color: #fff;
   border: none;
-  border-radius: 20px; /* Rounded corners for button */
-  padding: 8px 16px;
 }
 
-.start-billing:hover {
-  background-color: #7CB342; /* Darker Pista Green */
+.nav-link.book-demo:hover {
+  background: #43a047;
 }
 
-/* Mobile Specific Styles */
-@media screen and (max-width: 768px) {
+.nav-link.start-billing {
+  background: linear-gradient(90deg, #8bc34a, #7cb342);
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 14px rgba(139, 195, 74, 0.25);
+}
+
+.nav-link.start-billing:hover {
+  background: linear-gradient(90deg, #7cb342, #689f38);
+  transform: translateY(-2px);
+}
+
+/* -----------------------------------------------
+   User Profile Menu
+   ----------------------------------------------- */
+.user-profile-menu {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+
+.user-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8bc34a, #9ccc65);
+  color: white;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(139, 195, 74, 0.3);
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.user-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.user-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.user-actions .nav-link {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  border-radius: 6px;
+}
+
+.user-actions .dashboard {
+  background: #8bc34a;
+  color: white;
+}
+
+.user-actions .dashboard:hover {
+  background: #689f38;
+}
+
+.user-actions .logout {
+  background: #f44336;
+  color: white;
+}
+
+.user-actions .logout:hover {
+  background: #d32f2f;
+}
+
+/* -----------------------------------------------
+   Mobile Menu
+   ----------------------------------------------- */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 4px;
+  transition: transform 0.3s ease;
+}
+
+.hamburger {
+  width: 24px;
+  height: 3px;
+  background-color: #374151;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.hamburger.open {
+  background-color: #8bc34a;
+  transform: rotate(45deg);
+}
+
+@media (max-width: 768px) {
+  .nav-container {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 1rem;
+  }
+
   .nav-toggle {
     display: flex;
+    margin-left: auto;
   }
 
   .nav-menu {
-    position: fixed;
-    left: -100%;
-    top: 60px;
+    display: none;
     flex-direction: column;
-    background-color: #ffffff;
     width: 100%;
-    text-align: center;
-    transition: 0.3s;
-    box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
-    padding: 20px 0;
-    height: calc(100vh - 60px);
-    overflow-y: auto;
-    z-index: 999;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    border-radius: 0 0 12px 12px;
+    overflow: hidden;
   }
 
   .nav-menu.active {
-    left: 0;
+    display: flex;
+    animation: slideDown 0.4s ease forwards;
   }
 
   .nav-item {
-    margin: 10px 0;
     width: 100%;
+    text-align: center;
   }
 
   .nav-link {
-    padding: 12px 20px;
-    width: 100%;
-    justify-content: center;
-  }
-
-  .dropdown-menu {
-    position: static;
-    box-shadow: none;
-    background-color: #f8f9fa;
-    margin: 5px 0;
-    opacity: 1;
-    visibility: visible;
-    transform: none;
-    max-height: 300px;
-    overflow-y: auto;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-  }
-
-  .dropdown-menu.show {
-    display: block;
+    padding: 14px 0;
   }
 
   .nav-cta-buttons {
-    display: none; /* Hide CTA buttons on mobile menu */
-  }
-
-  /* Show CTA buttons inside mobile menu */
-  .mobile-cta-buttons {
-    display: flex;
     flex-direction: column;
-    gap: 15px;
-    padding: 20px;
-    border-top: 1px solid #eee;
+    margin-top: 10px;
   }
 
-  .mobile-cta-buttons a {
-    padding: 12px 20px;
-    text-align: center;
-    border-radius: 20px;
+  .user-profile-menu {
+    width: 100%;
+    justify-content: space-between;
+    padding-top: 10px;
   }
 
-  .mobile-cta-buttons .login {
-    color: #333;
-    border: none;
-    background-color: transparent;
-  }
-
-  .mobile-cta-buttons .book-demo {
-    color: #007bff;
-    border: 1px solid #007bff;
-    background-color: transparent;
-  }
-
-  .mobile-cta-buttons .start-billing {
-    background-color: #8BC34A;
-    color: #ffffff;
-    border: none;
-  }
-}
-
-/* Extra small screens */
-@media screen and (max-width: 480px) {
-  .nav-container {
-    padding: 0 15px;
-  }
-
-  .nav-link {
-    font-size: 0.9rem;
-  }
-
-  .dropdown-menu {
-    min-width: 180px;
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
