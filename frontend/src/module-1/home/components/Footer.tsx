@@ -1,99 +1,67 @@
 // src/module-1/home/components/Footer.tsx
-import React from 'react';
-import '../styles/Footer.css'; // Import the CSS file relative to its location
+import React from "react";
+import "../styles/Footer.css";
 
 const Footer: React.FC = () => {
   return (
     <footer className="footer">
-      {/* Top Gradient Bar */}
-      <div className="gradient-bar">
-        <p>Save up to 45% today <a href="#" className="demo-link">Book 1:1 Demo →</a></p>
-      </div>
-
-      {/* Main Footer Content */}
-      <div className="footer-content">
-        <div className="footer-column">
-          <h3>Get in touch</h3>
-          <ul>
-            <li><a href="#">Contact us</a></li>
-            <li><a href="mailto:support@flobiz.in">support@flobiz.in</a></li>
-            <li><a href="tel:+917400417400">+91 740041 7400</a></li>
-          </ul>
+      <div className="footer-container">
+        {/* Brand Section */}
+        <div className="footer-brand">
+          <h3 className="brand-title">Anybill</h3>
+          <p className="brand-tagline">Simplify Billing. Grow Your Business.</p>
         </div>
 
-        <div className="footer-column">
-          <h3>Information</h3>
-          <ul>
-            <li><a href="#">Pricing Plans</a></li>
-            <li><a href="#">Refund Policy</a></li>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Terms & Conditions</a></li>
-            <li><a href="#">Lender Partner Details</a></li>
-            <li><a href="#">Blog</a></li>
-            <li><a href="#">Service Pages</a></li>
-            <li><a href="#">HTML Sitemap</a></li>
-          </ul>
-        </div>
+        {/* Footer Links */}
+        <div className="footer-links">
+          <div className="footer-column">
+            <h4>Information</h4>
+            <ul>
+              <li><a href="#">Pricing Plans</a></li>
+              <li><a href="#">Refund Policy</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms & Conditions</a></li>
+              <li><a href="#">Blog</a></li>
+            </ul>
+          </div>
 
-        <div className="footer-column">
-          <h3>Resources</h3>
-          <ul>
-            <li><a href="#">Quotation Format</a></li>
-            <li><a href="#">Cash Memo Format</a></li>
-            <li><a href="#">Debit Note Format</a></li>
-            <li><a href="#">Proforma Invoice Format</a></li>
-            <li><a href="#">Hotel Bill Format</a></li>
-            <li><a href="#">Mobile Shop Bill Format</a></li>
-            <li><a href="#">Restaurant Bill Format</a></li>
-            <li><a href="#">Medical Bill Format</a></li>
-            <li><a href="#">Purchase Order Format</a></li>
-          </ul>
-        </div>
+          <div className="footer-column">
+            <h4>Resources</h4>
+            <ul>
+              <li><a href="#">Invoice Formats</a></li>
+              <li><a href="#">Billing Templates</a></li>
+              <li><a href="#">Tax Guide</a></li>
+              <li><a href="#">GST Tools</a></li>
+              <li><a href="#">Documentation</a></li>
+            </ul>
+          </div>
 
-        <div className="footer-column">
-          <h3>Software</h3>
-          <ul>
-            <li><a href="#">Accounting Software</a></li>
-            <li><a href="#">Inventory Management Software</a></li>
-            <li><a href="#">POS Billing Software</a></li>
-            <li><a href="#">E-Invoicing Software</a></li>
-            <li><a href="#">e-Way Bill Software</a></li>
-            <li><a href="#">Restaurant Billing Software</a></li>
-            <li><a href="#">Billing Software For Retail Shop</a></li>
-            <li><a href="#">Medical Billing Software</a></li>
-            <li><a href="#">Hotel Billing Software</a></li>
-          </ul>
-        </div>
+          <div className="footer-column">
+            <h4>Software</h4>
+            <ul>
+              <li><a href="#">Billing Software</a></li>
+              <li><a href="#">POS System</a></li>
+              <li><a href="#">Inventory Tools</a></li>
+              <li><a href="#">e-Invoice Generator</a></li>
+              <li><a href="#">Retail Solutions</a></li>
+            </ul>
+          </div>
 
-        <div className="footer-column">
-          <h3>GST Articles</h3>
-          <ul>
-            <li><a href="#">GST Invoice</a></li>
-            <li><a href="#">All About GST</a></li>
-            <li><a href="#">Know About HSN Code</a></li>
-            <li><a href="#">Delivery Challan</a></li>
-            <li><a href="#">Credit Note</a></li>
-            <li><a href="#">e Invoice</a></li>
-            <li><a href="#">eWay Bill</a></li>
-            <li><a href="#">Close The Financial Year in myBillBook</a></li>
-            <li><a href="#">Create e-invoice Using myBillBook</a></li>
-          </ul>
-        </div>
-
-        <div className="footer-column social">
-          <h3>Follow us</h3>
-          <div className="social-icons">
-            <a href="#" className="social-icon youtube"><span>YouTube</span></a>
-            <a href="#" className="social-icon facebook"><span>Facebook</span></a>
-            <a href="#" className="social-icon instagram"><span>Instagram</span></a>
+          <div className="footer-column">
+            <h4>Get in Touch</h4>
+            <ul>
+              <li><a href="mailto:support@flobiz.in">support@flobiz.in</a></li>
+              <li><a href="tel:+917400417400">+91 740041 7400</a></li>
+              <li><a href="#">Contact Us</a></li>
+            </ul>
           </div>
         </div>
       </div>
 
-      {/* Bottom Copyright */}
+      {/* Bottom Bar */}
       <div className="footer-bottom">
-        <p>Valorem Stack Private Limited</p>
-        <p>&copy; {new Date().getFullYear()} Anybill. All rights reserved.</p>
+        <p>© {new Date().getFullYear()} Anybill — All rights reserved</p>
+        <p className="footer-company">Valorem Stack Private Limited</p>
       </div>
     </footer>
   );

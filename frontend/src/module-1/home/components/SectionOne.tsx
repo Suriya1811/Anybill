@@ -1,163 +1,89 @@
 // src/module-1/home/components/SectionOne.tsx
-import React, { useState, useEffect, useRef } from 'react';
-import '../styles/SectionOne.css';
+import React, { useState, useEffect } from "react";
+import "../styles/SectionOne.css";
+
+// Import local images
+import b1 from "../../../assets/b1.jpg";
+import b2 from "../../../assets/b2.jpg";
+import b3 from "../../../assets/b3.jpg";
+import b4 from "../../../assets/b4.jpg";
+
+const slides = [
+  {
+    key: "analytics",
+    heading: "Real-Time Analytics",
+    content:
+      "Get instant insights into your business performance with live financial dashboards and metrics.",
+    image: b1,
+  },
+  {
+    key: "invoicing",
+    heading: "Smart Invoicing",
+    content:
+      "Generate professional invoices, track payments, and manage clients with ease using Anybill.",
+    image: b2,
+  },
+  {
+    key: "inventory",
+    heading: "Inventory Management",
+    content:
+      "Stay on top of your stock, suppliers, and order fulfillment with our integrated inventory system.",
+    image: b3,
+  },
+  {
+    key: "automation",
+    heading: "Workflow Automation",
+    content:
+      "Automate your billing operations and focus more on growing your business — Anybill does the rest.",
+    image: b4,
+  },
+];
 
 const SectionOne: React.FC = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [offsetX, setOffsetX] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(0);
 
-  const slides = [
-    {
-      image: "https://via.placeholder.com/600x400?text=Office+Scene",
-      heading: "All-in-one billing software to help grow your business 4.2x",
-      subheading: "Experience Effortless GST Compliance with myBillBook Invoicing Software"
-    },
-    {
-      image: "https://via.placeholder.com/600x400?text=Warehouse+Scene",
-      heading: "Your personal marketing & sales assistant, right in your pocket",
-      subheading: "Get more customers, get more from your customers"
-    },
-    {
-      image: "https://via.placeholder.com/600x400?text=On+The+Go+Scene",
-      heading: "Streamline Your Business with Anybill",
-      subheading: "The smartest way to manage billing, inventory, and accounting for small businesses."
-    }
-  ];
-
-  // Auto-advance every 6 seconds
+  // Auto-slide every 5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 6000);
+      setActive((prev) => (prev + 1) % slides.length);
+    }, 5000);
     return () => clearInterval(interval);
-  }, [slides.length]);
-
-  // Touch handlers
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setIsDragging(true);
-    setStartX(e.touches[0].clientX);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging) return;
-    const currentX = e.touches[0].clientX;
-    setOffsetX(currentX - startX);
-  };
-
-  const handleTouchEnd = () => {
-    if (!isDragging) return;
-    setIsDragging(false);
-    
-    // Determine swipe direction
-    if (offsetX > 50) {
-      goToPrev();
-    } else if (offsetX < -50) {
-      goToNext();
-    }
-    
-    setOffsetX(0);
-  };
-
-  // Mouse handlers (for desktop)
-  const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true);
-    setStartX(e.clientX);
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging) return;
-    const currentX = e.clientX;
-    setOffsetX(currentX - startX);
-  };
-
-  const handleMouseUp = () => {
-    if (!isDragging) return;
-    setIsDragging(false);
-    
-    if (offsetX > 50) {
-      goToPrev();
-    } else if (offsetX < -50) {
-      goToNext();
-    }
-    
-    setOffsetX(0);
-  };
-
-  const goToSlide = (index: number) => {
-    setCurrentSlide(index);
-  };
-
-  const goToPrev = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  };
-
-  const goToNext = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-  };
-
-  const current = slides[currentSlide];
+  }, []);
 
   return (
     <section className="section-one">
-      {/* Decorative Floating Elements */}
-      <div className="floating-bg">
-        <div className="float-item float-1"></div>
-        <div className="float-item float-2"></div>
-        <div className="float-item float-3"></div>
-      </div>
+      <div className="carousel-container">
+        {/* Left Menu */}
+        <ul className="carousel-menu">
+          {slides.map((slide, index) => (
+            <li
+              key={slide.key}
+              className={`menu-item ${active === index ? "active" : ""}`}
+              onClick={() => setActive(index)}
+            >
+              {slide.heading}
+            </li>
+          ))}
+        </ul>
 
-      <div className="section-wrapper">
-        {/* Left: Static Intro Text */}
-        <div className="intro-text">
-          <h2>Easily run your business</h2>
-          <h3>With the Best Billing & Accounting Software</h3>
-          <h1>Anytime, Anywhere!</h1>
-          <p>Multi-user, multi-device, multi-business functionalities make Anybill billing software a superpower for your business!</p>
-        </div>
+        {/* Divider */}
+        <div className="divider" />
 
-        {/* Right: Dynamic Content (Image + Overlay Text) */}
-        <div 
-          className="content-card"
-          ref={containerRef}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
-        >
-          {/* Image Carousel */}
-          <div className="image-frame">
+        {/* Right Content */}
+        <div className="carousel-content">
+          <div className="content-image">
             <img
-              src={current.image}
-              alt={`Slide ${currentSlide + 1}`}
-              className="slide-image"
+              src={slides[active].image}
+              alt={slides[active].heading}
+              className="fade-in"
             />
           </div>
-
-          {/* Overlay Text */}
-          <div className="overlay-text">
-            <h1 className="overlay-heading">{current.heading}</h1>
-            <p className="overlay-subheading">{current.subheading}</p>
-            <button className="cta-button">Get Started Now →</button>
+          <div className="content-text">
+            <h2>{slides[active].heading}</h2>
+            <p>{slides[active].content}</p>
+            <button className="cta-btn">Learn More →</button>
           </div>
         </div>
-      </div>
-
-      {/* Slide Indicators */}
-      <div className="slide-indicators">
-        {slides.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => goToSlide(i)}
-            className={`indicator ${i === currentSlide ? 'active' : ''}`}
-            aria-label={`Go to slide ${i + 1}`}
-          />
-        ))}
       </div>
     </section>
   );

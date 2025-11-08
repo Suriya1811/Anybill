@@ -1,22 +1,35 @@
 /* =====================================================
-   Anybill Global Styles - Premium UI Foundation
+   Anybill Global Styles — Minimal & Premium Look
    ===================================================== */
 
-/* Root variables for theme consistency */
+/* -----------------------------------------------
+   Theme Variables — Elegant Neutral Palette
+   ----------------------------------------------- */
 :root {
-  --font-primary: "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif;
-  --color-bg-dark: #121212;
-  --color-bg-light: #f9fafb;
-  --color-text-dark: #e5e7eb;
-  --color-text-light: #1f2937;
-  --color-brand: #8bc34a; /* Pista green */
-  --color-accent: #007bff;
-  --color-muted: #9ca3af;
+  --font-primary: "Inter", "Poppins", system-ui, sans-serif;
+
+  --color-bg-light: #f6f7f8;
+  --color-bg-dark: #0e0f0e;
+  --color-surface: #ffffff;
+  --color-surface-dark: #181a18;
+
+  --color-text: #1f2328;
+  --color-text-light: #f3f4f6;
+  --color-text-muted: #6b7280;
+
+  --color-brand: #8bc34a; /* Pista Green */
+  --color-brand-hover: #7cb342;
+
   --radius: 8px;
   --transition: all 0.25s ease-in-out;
+
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-/* Base Reset */
+/* -----------------------------------------------
+   Reset & Base Setup
+   ----------------------------------------------- */
 * {
   margin: 0;
   padding: 0;
@@ -25,35 +38,27 @@
 
 html {
   scroll-behavior: smooth;
-  -webkit-text-size-adjust: 100%;
 }
 
 body {
   font-family: var(--font-primary);
-  color: var(--color-text-light);
   background-color: var(--color-bg-light);
-  min-height: 100vh;
-  min-width: 320px;
-  line-height: 1.6;
+  color: var(--color-text);
   font-size: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: stretch;
-  text-rendering: optimizeLegibility;
+  line-height: 1.65;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
 }
 
 /* -----------------------------------------------
-   Headings & Typography
+   Typography — Confident Simplicity
    ----------------------------------------------- */
 h1, h2, h3, h4, h5, h6 {
+  color: var(--color-text);
   font-weight: 600;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.4px;
   margin-bottom: 0.5em;
-  color: var(--color-text-light);
 }
 
 h1 {
@@ -66,157 +71,137 @@ h2 {
 }
 
 p {
-  color: var(--color-muted);
+  color: var(--color-text-muted);
   margin-bottom: 1em;
   max-width: 70ch;
 }
 
 a {
-  color: var(--color-accent);
-  font-weight: 500;
+  color: var(--color-brand);
   text-decoration: none;
   transition: var(--transition);
+  font-weight: 500;
 }
 
 a:hover {
+  color: var(--color-brand-hover);
+}
+
+/* -----------------------------------------------
+   Buttons — Clean & Subtle Shadows
+   ----------------------------------------------- */
+button, .btn {
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.7em 1.6em;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  background-color: var(--color-brand);
+  color: #fff;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+button:hover, .btn:hover {
+  background-color: var(--color-brand-hover);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid var(--color-brand);
   color: var(--color-brand);
 }
 
-/* -----------------------------------------------
-   Buttons
-   ----------------------------------------------- */
-button {
-  border: none;
-  border-radius: var(--radius);
-  padding: 0.75em 1.5em;
-  font-size: 1rem;
-  font-weight: 500;
-  font-family: inherit;
-  color: #fff;
+.btn-outline:hover {
   background-color: var(--color-brand);
-  cursor: pointer;
-  transition: var(--transition);
-  box-shadow: 0 4px 12px rgba(139, 195, 74, 0.25);
-}
-
-button:hover {
-  background-color: #7cb342;
-  box-shadow: 0 6px 20px rgba(139, 195, 74, 0.35);
-}
-
-button:active {
-  transform: translateY(1px);
-}
-
-button:focus,
-button:focus-visible {
-  outline: 3px solid rgba(139, 195, 74, 0.4);
-  outline-offset: 3px;
+  color: #fff;
 }
 
 /* -----------------------------------------------
-   Layout Helpers
+   Layout & Containers
    ----------------------------------------------- */
 .container {
   width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
 }
 
 .section {
-  padding: 4rem 1rem;
+  padding: 4.5rem 1.5rem;
 }
 
 .text-center {
   text-align: center;
 }
 
-.flex-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.grid {
-  display: grid;
-  gap: 1.5rem;
-}
-
 /* -----------------------------------------------
-   Inputs & Forms
+   Inputs & Forms — Clean & Professional
    ----------------------------------------------- */
-input,
-textarea,
-select {
-  font-family: var(--font-primary);
-  font-size: 1rem;
+input, textarea, select {
+  width: 100%;
   padding: 0.75rem 1rem;
   border-radius: var(--radius);
-  border: 1px solid #e5e7eb;
-  width: 100%;
+  border: 1px solid #e0e0e0;
+  font-size: 1rem;
+  color: var(--color-text);
+  background: #fff;
   transition: var(--transition);
-  color: var(--color-text-light);
 }
 
-input:focus,
-textarea:focus,
-select:focus {
+input:focus, textarea:focus, select:focus {
   border-color: var(--color-brand);
+  box-shadow: 0 0 0 2px rgba(139, 195, 74, 0.25);
   outline: none;
-  box-shadow: 0 0 0 3px rgba(139, 195, 74, 0.2);
 }
 
 /* -----------------------------------------------
-   Scrollbar Styling (Premium Touch)
+   Scrollbar — Subtle & Modern
    ----------------------------------------------- */
 ::-webkit-scrollbar {
   width: 8px;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(139, 195, 74, 0.6);
-  border-radius: 10px;
+  background: rgba(139, 195, 74, 0.5);
+  border-radius: 8px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(139, 195, 74, 0.8);
 }
 
 /* -----------------------------------------------
-   Dark Mode
+   Dark Mode (Elegant Inversion)
    ----------------------------------------------- */
 @media (prefers-color-scheme: dark) {
   body {
     background-color: var(--color-bg-dark);
-    color: var(--color-text-dark);
+    color: var(--color-text-light);
+  }
+
+  input, textarea, select {
+    background-color: var(--color-surface-dark);
+    color: var(--color-text-light);
+    border-color: #2c2c2c;
+  }
+
+  button {
+    background-color: var(--color-brand);
   }
 
   a {
     color: var(--color-brand);
   }
-
-  button {
-    background-color: var(--color-accent);
-  }
-
-  input,
-  textarea,
-  select {
-    background-color: #1f1f1f;
-    color: var(--color-text-dark);
-    border-color: #333;
-  }
 }
 
 /* -----------------------------------------------
-   Responsive Defaults
+   Responsiveness — Adaptive Design
    ----------------------------------------------- */
 @media (max-width: 1024px) {
-  .container {
-    padding: 0 1rem;
-  }
-
   .section {
-    padding: 3rem 1rem;
+    padding: 3.5rem 1rem;
   }
 }
 
@@ -239,8 +224,12 @@ select:focus {
 }
 
 @media (max-width: 480px) {
+  .section {
+    padding: 3rem 1rem;
+  }
+
   h1 {
-    font-size: 1.8rem;
+    font-size: 1.75rem;
   }
 
   p {
