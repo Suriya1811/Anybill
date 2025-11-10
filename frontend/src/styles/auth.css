@@ -1,0 +1,209 @@
+/* Auth Pages - Theme Aware */
+.auth-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 200px);
+  padding: 40px 20px;
+  width: 100%;
+  background: var(--bg-primary);
+}
+
+.dashboard-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 200px);
+  padding: 40px 20px;
+  width: 100%;
+  background: var(--bg-primary);
+}
+
+.auth-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 40px 30px;
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+  animation: popIn 0.5s ease both;
+}
+
+.auth-card h2 {
+  margin-bottom: 12px;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+[data-theme="light"] .auth-card h2 {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+[data-theme="dark"] .auth-card h2 {
+  color: var(--text-primary);
+}
+
+.auth-card p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.auth-link-text {
+  color: var(--text-secondary) !important;
+}
+
+.auth-link-text a {
+  color: var(--primary-color) !important;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.auth-link-text a:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+.auth-hint {
+  color: var(--text-tertiary) !important;
+}
+
+.auth-card input {
+  margin-top: 18px;
+  padding: 12px 16px;
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--input-text);
+  font-size: 15px;
+  outline: none;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.auth-card input:focus {
+  border-color: var(--primary-color);
+  background: var(--input-bg);
+  box-shadow: 0 0 0 3px var(--hover-bg);
+}
+
+.auth-card input::placeholder {
+  color: var(--input-placeholder);
+  opacity: 1;
+}
+
+.auth-card button {
+  margin-top: 18px;
+  width: 100%;
+  background: var(--primary-color);
+  color: var(--text-inverse);
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: var(--shadow-sm);
+}
+
+[data-theme="light"] .auth-card button {
+  color: white;
+}
+
+[data-theme="dark"] .auth-card button {
+  color: var(--bg-primary);
+}
+
+.auth-card button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  opacity: 0.9;
+}
+
+.auth-card button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: var(--error-color) !important;
+  font-size: 14px;
+  margin-top: 8px;
+  text-align: left;
+  padding: 8px 12px;
+  background: rgba(239, 68, 68, 0.1);
+  border-radius: 6px;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.logout-btn {
+  background: var(--error-color) !important;
+  color: white !important;
+  margin-top: 24px;
+}
+
+.loader {
+  width: 16px;
+  height: 16px;
+  border: 3px solid var(--border-color);
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Auth Input Styles */
+.auth-input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--input-text);
+  font-size: 15px;
+  outline: none;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.auth-input:focus {
+  border-color: var(--primary-color);
+  background: var(--input-bg);
+  box-shadow: 0 0 0 3px var(--hover-bg);
+}
+
+.auth-input::placeholder {
+  color: var(--input-placeholder);
+  opacity: 1;
+}
+
+select.auth-input {
+  cursor: pointer;
+}
+
+select.auth-input option {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}

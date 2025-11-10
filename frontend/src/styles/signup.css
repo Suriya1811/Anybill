@@ -1,0 +1,137 @@
+.page-signup {
+  padding: 100px 0;
+  width: 100%;
+  min-height: calc(100vh - 200px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signup-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.signup-card {
+  padding: 48px;
+  text-align: center;
+}
+
+.signup-header {
+  margin-bottom: 40px;
+}
+
+.signup-header .h1 {
+  margin-bottom: 12px;
+}
+
+.signup-header .lead {
+  margin: 0 auto;
+  max-width: 500px;
+}
+
+.signup-content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.info-box {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+}
+
+.info-box p {
+  color: var(--muted-light);
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.signup-benefits {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted-light);
+  font-size: 0.95rem;
+}
+
+.benefit-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent-gradient);
+  color: #0a0e27;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.signup-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.signup-actions .btn {
+  min-width: 200px;
+}
+
+.signup-actions .btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (min-width: 1400px) {
+  .signup-container {
+    padding: 0 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-signup {
+    padding: 60px 0;
+  }
+  
+  .signup-card {
+    padding: 32px;
+  }
+  
+  .signup-header {
+    margin-bottom: 32px;
+  }
+  
+  .info-box {
+    padding: 20px;
+  }
+  
+  .signup-benefits {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+  
+  .signup-actions .btn {
+    width: 100%;
+  }
+}
+

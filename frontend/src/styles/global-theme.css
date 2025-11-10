@@ -1,0 +1,159 @@
+/* Global Theme Styles - Applied to all pages */
+
+/* Root element color */
+#root {
+  color: var(--text-primary);
+}
+
+/* Ensure all text is visible */
+* {
+  color: inherit;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* Loading states */
+.loading {
+  color: var(--text-primary) !important;
+  padding: 20px;
+  text-align: center;
+}
+
+/* All text elements - Improved visibility */
+p, span, div, h1, h2, h3, h4, h5, h6, label, li, td, th, a {
+  color: var(--text-primary);
+}
+
+/* Ensure headings are always visible */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary) !important;
+}
+
+/* Paragraph text */
+p {
+  color: var(--text-primary);
+}
+
+/* List items */
+li {
+  color: var(--text-primary);
+}
+
+/* Secondary text */
+.secondary-text {
+  color: var(--text-secondary);
+}
+
+.tertiary-text {
+  color: var(--text-tertiary);
+}
+
+/* Links - Better visibility */
+a {
+  color: var(--primary-color);
+  transition: opacity 0.3s ease;
+}
+
+:root[data-theme="light"] a {
+  color: var(--primary-dark);
+}
+
+:root[data-theme="dark"] a {
+  color: var(--primary-color);
+}
+
+a:hover {
+  opacity: 0.8;
+}
+
+/* Strong text - Enhanced visibility */
+strong, b {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Ensure inputs are visible */
+input, select, textarea {
+  color: var(--input-text) !important;
+  background: var(--input-bg) !important;
+  border-color: var(--input-border) !important;
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--input-placeholder) !important;
+}
+
+/* Buttons */
+button {
+  color: inherit;
+}
+
+/* Cards and containers */
+.card, .dashboard-card, .form-card {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+/* Tables */
+table {
+  color: var(--text-primary);
+}
+
+th, td {
+  color: var(--text-primary);
+}
+
+/* Status colors - keep semantic colors */
+.status-paid {
+  color: var(--success-color);
+}
+
+.status-pending {
+  color: var(--warning-color);
+}
+
+.status-overdue {
+  color: var(--error-color);
+}
+
+.status-draft {
+  color: var(--text-tertiary);
+}
+
+/* Focus states for accessibility */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Selection styles */
+::selection {
+  background: var(--primary-color);
+  color: white;
+}
+
+:root[data-theme="dark"] ::selection {
+  background: var(--accent);
+  color: #0a0e27;
+}
+
+:root[data-theme="light"] ::selection {
+  background: var(--primary-color);
+  color: white;
+}
+
+/* Smooth transitions for theme switching */
+*:not(svg):not(path):not(circle):not(rect) {
+  transition-property: background-color, border-color, color, box-shadow;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+}
+
