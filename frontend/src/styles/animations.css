@@ -1,0 +1,14 @@
+@keyframes floaty {
+  0% { transform: translateY(0px) }
+  50% { transform: translateY(-10px) }
+  100% { transform: translateY(0px) }
+}
+@keyframes blob {
+  0% { transform: translateY(0) scale(1) rotate(0deg) }
+  50% { transform: translateY(-8px) scale(1.06) rotate(6deg) }
+  100% { transform: translateY(0) scale(1) rotate(0deg) }
+}
+
+/* subtle fade-in for sections */
+.fade-in { animation: fadeIn .7s both cubic-bezier(.2,.9,.3,1) }
+@keyframes fadeIn { from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none} }
