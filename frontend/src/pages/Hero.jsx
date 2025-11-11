@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "../styles/hero.css";
 import CTA from "../components/CTA";
+import heroImage from "../assets/images/hero-image.jpg";
 
 export default function Hero() {
   return (
@@ -21,7 +22,7 @@ export default function Hero() {
 
         <div className="hero-right">
           <div className="hero-image-container">
-            <img src="/src/img.jpg" alt="MyBillPro Dashboard" className="hero-image" />
+            <img src={heroImage} alt="MyBillPro Dashboard" className="hero-image" />
           </div>
         </div>
       </div>

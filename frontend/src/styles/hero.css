@@ -132,7 +132,7 @@
     font-size: clamp(2.5rem, 5vw, 3.5rem);
   }
   
-  .hero-ill {
+  .hero-image-container {
     max-width: 600px;
     height: 500px;
   }

@@ -292,6 +292,28 @@ body {
   animation: fadeIn 0.3s ease-out;
 }
 
+/* Centering utilities */
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.center-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Minimal Scrollbar styling */
 ::-webkit-scrollbar {
   width: 6px;
