@@ -1,14 +1,13 @@
 .feature-card {
-  padding: 32px;
+  padding: 24px;
   border-radius: var(--radius);
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   height: 100%;
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow: hidden;
   box-shadow: var(--shadow-sm);
 }
 
@@ -22,28 +21,9 @@
   border: 1px solid var(--border-color);
 }
 
-.feature-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  transform: scaleX(0);
-  transition: transform 0.3s ease;
-}
-
-:root[data-theme="dark"] .feature-card::before {
-  background: var(--accent-gradient);
-}
-
-:root[data-theme="light"] .feature-card::before {
-  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-}
-
 .feature-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-xl);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
 :root[data-theme="dark"] .feature-card:hover {
@@ -52,11 +32,7 @@
 
 :root[data-theme="light"] .feature-card:hover {
   border-color: var(--primary-color);
-  box-shadow: 0 12px 32px rgba(123, 168, 90, 0.2);
-}
-
-.feature-card:hover::before {
-  transform: scaleX(1);
+  box-shadow: var(--shadow-md);
 }
 
 .feature-top {
@@ -67,31 +43,16 @@
 }
 
 .feature-icon {
-  width: 64px;
-  height: 64px;
-  min-width: 64px;
+  width: 56px;
+  height: 56px;
+  min-width: 56px;
   border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 28px;
-  transition: transform 0.3s ease;
-}
-
-:root[data-theme="dark"] .feature-icon {
-  background: var(--accent-gradient);
-  color: #0a0e27;
-  box-shadow: 0 4px 20px rgba(0, 217, 165, 0.3);
-}
-
-:root[data-theme="light"] .feature-icon {
-  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-  color: white;
-  box-shadow: 0 4px 20px rgba(123, 168, 90, 0.3);
-}
-
-.feature-card:hover .feature-icon {
-  transform: scale(1.1) rotate(5deg);
+  font-size: 24px;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
 }
 
 .feature-title {
@@ -112,17 +73,21 @@
 
 @media (max-width: 768px) {
   .feature-card {
-    padding: 24px;
+    padding: 20px;
   }
   
   .feature-icon {
-    width: 56px;
-    height: 56px;
-    min-width: 56px;
-    font-size: 24px;
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    font-size: 20px;
   }
   
   .feature-title {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
+  }
+  
+  .feature-desc {
+    font-size: 0.95rem;
   }
 }

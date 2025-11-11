@@ -20,8 +20,9 @@ export default function Hero() {
         </div>
 
         <div className="hero-right">
-          <div className="blob" aria-hidden />
-          <div className="hero-ill" aria-hidden />
+          <div className="hero-image-container">
+            <img src="/src/img.jpg" alt="MyBillPro Dashboard" className="hero-image" />
+          </div>
         </div>
       </div>
       <CTA />
