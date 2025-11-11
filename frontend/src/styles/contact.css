@@ -1,0 +1,83 @@
+.page-contact {
+  padding: 100px 0;
+  width: 100%;
+  min-height: calc(100vh - 200px);
+}
+
+.page-contact .h1 {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.page-contact .lead {
+  text-align: center;
+  margin: 0 auto 60px;
+  max-width: 600px;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 32px;
+  margin-top: 48px;
+  max-width: var(--max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 24px;
+}
+
+.contact-info {
+  padding: 32px;
+  height: fit-content;
+  position: sticky;
+  top: 100px;
+}
+
+.contact-info h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: var(--text-primary);
+}
+
+.contact-info p {
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 16px;
+  font-size: 1.05rem;
+}
+
+.contact-info p:last-child {
+  margin-bottom: 0;
+}
+
+@media (min-width: 1400px) {
+  .contact-grid {
+    padding: 0 40px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  .contact-info {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-contact {
+    padding: 60px 0;
+  }
+  
+  .contact-grid {
+    padding: 0 20px;
+  }
+  
+  .contact-info {
+    padding: 24px;
+  }
+}
