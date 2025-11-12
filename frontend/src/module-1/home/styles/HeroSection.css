@@ -1,0 +1,354 @@
+/* src/module-1/home/styles/HeroSection.css */
+/* Reset & Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Hero Section Container */
+.hero-section {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1a252e, #2c3e50); /* Dark gradient background */
+  color: #ffffff; /* White text for contrast */
+}
+
+/* Main Content */
+.hero-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 20px;
+  width: 100%;
+  gap: 40px;
+}
+
+.hero-text {
+  flex: 1;
+  text-align: left;
+}
+
+.hero-text h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  animation: fadeInUp 1s ease-out;
+  color: #ffffff; /* Ensure text is white */
+}
+
+.hero-text p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  animation: fadeInUp 1s ease-out 0.2s both;
+  color: #bdc3c7; /* Light gray for secondary text */
+}
+
+.benefits-list {
+  margin-bottom: 40px;
+}
+
+.benefit-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  animation: fadeInUp 1s ease-out 0.4s both;
+}
+
+.checkmark {
+  color: #8BC34A; /* Pista Green */
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-right: 10px;
+}
+
+.benefit-item span:last-child {
+  font-size: 1rem;
+  color: #ecf0f1; /* Light text for readability */
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 20px;
+  animation: fadeInUp 1s ease-out 0.6s both;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background-color: #8BC34A; /* Pista Green */
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(139, 195, 74, 0.3);
+}
+
+.btn-primary:hover {
+  background-color: #7CB342;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(139, 195, 74, 0.4);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+}
+
+.btn-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(255, 255, 255, 0.2);
+}
+
+/* Animated Illustration Placeholder */
+.hero-illustration {
+  flex: 1;
+  position: relative;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeInRight 1s ease-out;
+}
+
+.animated-shape {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  animation: float 6s ease-in-out infinite;
+}
+
+.shape-1 {
+  width: 150px;
+  height: 150px;
+  top: -50px;
+  left: -50px;
+  animation-delay: 0s;
+}
+
+.shape-2 {
+  width: 100px;
+  height: 100px;
+  bottom: -30px;
+  right: -30px;
+  animation-delay: 2s;
+}
+
+.shape-3 {
+  width: 80px;
+  height: 80px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-delay: 4s;
+}
+
+.illustration-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.illustration-content h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+
+.illustration-content p {
+  font-size: 1rem;
+  margin-bottom: 20px;
+  color: #bdc3c7;
+}
+
+.play-button {
+  padding: 10px 20px;
+  background-color: #8BC34A;
+  color: #ffffff;
+  border: none;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.play-button:hover {
+  background-color: #7CB342;
+  transform: scale(1.05);
+}
+
+/* Floating Elements for Visual Interest */
+.floating-elements {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.floating-circle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  animation: float 6s ease-in-out infinite;
+}
+
+.circle-1 {
+  width: 300px;
+  height: 300px;
+  top: -100px;
+  left: -100px;
+  animation-delay: 0s;
+}
+
+.circle-2 {
+  width: 200px;
+  height: 200px;
+  bottom: -50px;
+  right: -50px;
+  animation-delay: 2s;
+}
+
+.circle-3 {
+  width: 150px;
+  height: 150px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-delay: 4s;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(5px, 5px) rotate(180deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(360deg);
+  }
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1024px) {
+  .hero-content {
+    flex-direction: column;
+    padding: 60px 20px;
+  }
+
+  .hero-text {
+    text-align: center;
+  }
+
+  .hero-text h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero-text p {
+    font-size: 1.1rem;
+  }
+
+  .cta-buttons {
+    justify-content: center;
+  }
+
+  .hero-illustration {
+    order: -1;
+    margin-bottom: 40px;
+    height: 250px;
+  }
+
+  .shape-1,
+  .shape-2,
+  .shape-3 {
+    display: none; /* Hide shapes on smaller screens for simplicity */
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .hero-section {
+    min-height: auto;
+    padding: 60px 0;
+  }
+
+  .hero-content {
+    padding: 40px 15px;
+  }
+
+  .hero-text h1 {
+    font-size: 2rem;
+  }
+
+  .hero-text p {
+    font-size: 1rem;
+  }
+
+  .benefit-item {
+    font-size: 0.9rem;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    text-align: center;
+  }
+
+  .circle-1,
+  .circle-2,
+  .circle-3 {
+    display: none; /* Hide floating circles on smaller screens for simplicity */
+  }
+}
