@@ -4,9 +4,9 @@ import "../styles/cta.css";
 
 export default function CTA() {
   return (
-    <section className="cta">
+    <section className="cta container">
       <div className="cta-inner card">
-        <div className="cta-content">
+        <div>
           <h2 className="h2">Ready to simplify your billing?</h2>
           <p className="lead">Start a free trial today — no credit card required.</p>
         </div>

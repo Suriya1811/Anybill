@@ -1,45 +1,219 @@
-.page-features {
-  padding: 100px 0;
+/* -------------------------------------------------- */
+/*        FEATURES PAGE - APPLE / CRED STYLE FIXED    */
+/* -------------------------------------------------- */
+
+.features-page {
   width: 100%;
-  min-height: calc(100vh - 200px);
 }
 
-.page-features .h1 {
+/* ------------------------ HERO ------------------------ */
+
+.features-hero {
+  padding: 120px 0 80px;
+  background: var(--bg-primary);
   text-align: center;
-  margin-bottom: 12px;
 }
 
-.page-features .lead {
-  text-align: center;
-  margin: 0 auto 60px;
-  max-width: 700px;
+/* ---------------------- MAIN SECTION --------------------- */
+
+.features-main {
+  padding: 60px 0;
+  background: var(--bg-secondary);
 }
 
-.features-list {
+.feature-block {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 24px;
-  margin-top: 48px;
-  max-width: var(--max-width);
-  margin-left: auto;
-  margin-right: auto;
-  padding: 0 24px;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  padding: 80px 0;
+  border-bottom: 1px solid var(--border-color);
 }
 
-@media (min-width: 1400px) {
-  .features-list {
-    padding: 0 40px;
-  }
+.feature-block:last-child {
+  border-bottom: none;
 }
 
-@media (max-width: 768px) {
-  .page-features {
-    padding: 60px 0;
-  }
-  
-  .features-list {
+/* Reverse layout */
+.feature-block.reverse {
+  direction: rtl;
+}
+.feature-block.reverse > * {
+  direction: ltr;
+}
+
+/* Badge */
+.feature-badge {
+  padding: 8px 16px;
+  background: rgba(var(--primary-color-rgb, 123,168,90), 0.1);
+  color: var(--primary-color);
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+/* Title */
+.feature-block h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 20px;
+  color: var(--text-primary);
+}
+
+/* Description */
+.feature-block p {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+
+/* List */
+.feature-list {
+  padding: 0;
+  margin: 0;
+}
+.feature-list li {
+  padding: 12px 0;
+  font-size: 1.0625rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+}
+
+/* Image block */
+.feature-visual {
+  width: 100%;
+}
+
+.visual-placeholder {
+  background: var(--bg-primary);
+  border: 2px dashed var(--border-color);
+  border-radius: 20px;
+  padding: 100px 40px;
+  text-align: center;
+  min-height: 450px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* ------------------- MINI FEATURES ------------------- */
+
+.additional-features {
+  padding: 100px 0;
+  background: var(--bg-primary);
+}
+
+.mini-features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  margin-top: 60px;
+}
+
+.mini-feature {
+  background: var(--bg-secondary);
+  padding: 32px 24px;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  text-align: center;
+}
+
+.mini-feature:hover {
+  border-color: var(--primary-color);
+}
+
+.mini-icon {
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+}
+
+.mini-feature h4 {
+  font-size: 1.125rem;
+  margin-bottom: 8px;
+}
+
+.mini-feature p {
+  font-size: 0.9375rem;
+}
+
+/* CTA */
+.features-cta {
+  padding: 100px 0;
+  background: var(--bg-secondary);
+}
+
+/* -------------------------------------------------- */
+/*                   RESPONSIVE FIXES                 */
+/* -------------------------------------------------- */
+
+/* ---- Tablet (≤968px) ---- */
+@media (max-width: 968px) {
+  .feature-block,
+  .feature-block.reverse {
     grid-template-columns: 1fr;
-    gap: 20px;
-    padding: 0 20px;
+    gap: 40px;
+    direction: ltr;
+  }
+
+  .mini-features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ---- Mobile (≤640px) ---- */
+@media (max-width: 640px) {
+  .features-hero {
+    padding: 80px 0 60px;
+  }
+
+  .feature-block {
+    padding: 45px 0; /* FIX: smaller block height */
+    gap: 28px;       /* FIX: less vertical spacing */
+  }
+
+  .feature-block h2 {
+    font-size: 1.8rem; /* FIX: prevent oversized heading */
+  }
+
+  .feature-block p {
+    font-size: 1rem;  /* FIX: readable mobile size */
+    line-height: 1.6;
+  }
+
+  .feature-list li {
+    font-size: 0.95rem;
+    padding: 8px 0; /* FIX: less tall list items */
+  }
+
+  .visual-placeholder {
+    padding: 60px 20px;    /* FIX: smaller container */
+    min-height: 260px;     /* FIX: no huge empty box */
+  }
+
+  .mini-features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mini-feature {
+    padding: 24px 18px;
+  }
+}
+
+/* ---- Extra Small (≤420px) ---- */
+@media (max-width: 420px) {
+  .feature-block h2 {
+    font-size: 1.6rem;
+  }
+
+  .feature-block {
+    padding: 35px 0;
+  }
+
+  .visual-placeholder {
+    min-height: 220px;
   }
 }

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { statsService } from "../../services/apiService";
 import "../../styles/dashboard.css";
 
-export default function DashboardHome({ user }) {
+export default function DashboardHome({ user, onNavigate }) {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [dateRange, setDateRange] = useState("month");
@@ -22,16 +22,24 @@ export default function DashboardHome({ user }) {
           startDate = today.toISOString().split("T")[0];
           break;
         case "week":
-          startDate = new Date(today.setDate(today.getDate() - 7)).toISOString().split("T")[0];
+          const weekAgo = new Date();
+          weekAgo.setDate(weekAgo.getDate() - 7);
+          startDate = weekAgo.toISOString().split("T")[0];
           break;
         case "month":
-          startDate = new Date(today.setMonth(today.getMonth() - 1)).toISOString().split("T")[0];
+          const monthAgo = new Date();
+          monthAgo.setMonth(monthAgo.getMonth() - 1);
+          startDate = monthAgo.toISOString().split("T")[0];
           break;
         case "year":
-          startDate = new Date(today.setFullYear(today.getFullYear() - 1)).toISOString().split("T")[0];
+          const yearAgo = new Date();
+          yearAgo.setFullYear(yearAgo.getFullYear() - 1);
+          startDate = yearAgo.toISOString().split("T")[0];
           break;
         default:
-          startDate = new Date(today.setMonth(today.getMonth() - 1)).toISOString().split("T")[0];
+          const defaultMonthAgo = new Date();
+          defaultMonthAgo.setMonth(defaultMonthAgo.getMonth() - 1);
+          startDate = defaultMonthAgo.toISOString().split("T")[0];
       }
 
       const res = await statsService.getStats({ startDate, endDate });
@@ -140,34 +148,133 @@ export default function DashboardHome({ user }) {
 
       {/* Quick Actions */}
       <div className="quick-actions">
-        <h2>Quick Actions</h2>
+        <div className="quick-actions-header">
+          <h2>Quick Actions</h2>
+        </div>
         <div className="actions-grid">
-          <button className="action-btn" onClick={() => window.location.href = "/dashboard?tab=invoices&action=create"}>
+          <button className="action-btn" onClick={() => onNavigate && onNavigate('invoices')}>
             <span className="action-icon">➕</span>
             <span>Create Invoice</span>
           </button>
-          <button className="action-btn" onClick={() => window.location.href = "/dashboard?tab=customers&action=create"}>
+          <button className="action-btn" onClick={() => onNavigate && onNavigate('customers')}>
             <span className="action-icon">👤</span>
             <span>Add Customer</span>
           </button>
-          <button className="action-btn" onClick={() => window.location.href = "/dashboard?tab=products&action=create"}>
+          <button className="action-btn" onClick={() => onNavigate && onNavigate('products')}>
             <span className="action-icon">📦</span>
             <span>Add Product</span>
           </button>
-          <button className="action-btn" onClick={() => window.location.href = "/dashboard?tab=reports"}>
+          <button className="action-btn" onClick={() => onNavigate && onNavigate('reports')}>
             <span className="action-icon">📊</span>
             <span>View Reports</span>
           </button>
         </div>
       </div>
 
-      {/* Recent Activity */}
-      <div className="recent-activity">
-        <h2>Recent Invoices</h2>
-        <div className="activity-list">
-          <p className="empty-state">Recent invoices will appear here</p>
+      {/* Alerts & Notifications */}
+      {stats?.lowStockAlerts?.length > 0 && (
+        <div className="alerts-section">
+          <h2>⚠️ Low Stock Alerts</h2>
+          <div className="alerts-grid">
+            {stats.lowStockAlerts.map((alert, idx) => (
+              <div key={idx} className="alert-card warning">
+                <h4>{alert.name}</h4>
+                <p>
+                  Current Stock: <strong>{alert.currentStock} {alert.unit}</strong>
+                </p>
+                <p className="text-sm">
+                  Alert Level: {alert.lowStockAlert} {alert.unit}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
+      )}
+
+      {/* Payment Reminders */}
+      {stats?.paymentReminders?.length > 0 && (
+        <div className="alerts-section">
+          <h2>💰 Payment Reminders (Overdue)</h2>
+          <div className="reminders-list">
+            {stats.paymentReminders.map((reminder, idx) => (
+              <div key={reminder.invoiceId || idx} className="reminder-card overdue">
+                <div className="reminder-header">
+                  <h4>Invoice #{reminder.invoiceNumber || 'N/A'}</h4>
+                  <span className="days-overdue">{reminder.daysOverdue || 0} days overdue</span>
+                </div>
+                <div className="reminder-details">
+                  <p><strong>{reminder.customer?.name || 'Unknown Customer'}</strong></p>
+                  <p>{reminder.customer?.phone || 'N/A'}</p>
+                  <p>Amount Due: ₹{(reminder.balance || 0).toLocaleString()}</p>
+                  <p className="text-sm">
+                    Due Date: {reminder.dueDate ? new Date(reminder.dueDate).toLocaleDateString() : 'N/A'}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Top Customers & Products */}
+      <div className="insights-grid">
+        {stats?.topCustomers?.length > 0 && (
+          <div className="insight-section">
+            <h2>🏆 Top Customers</h2>
+            <div className="top-list">
+              {stats.topCustomers.slice(0, 5).map((customer, idx) => (
+                <div key={customer.customerId || idx} className="top-item">
+                  <div className="rank">{idx + 1}</div>
+                  <div className="top-details">
+                    <h4>{customer.name || 'Unknown'}</h4>
+                    <p>Total Purchases: ₹{(customer.totalPurchases || 0).toLocaleString()}</p>
+                    <p className="text-sm">{customer.invoiceCount || 0} invoices</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {stats?.topProducts?.length > 0 && (
+          <div className="insight-section">
+            <h2>⭐ Top Selling Products</h2>
+            <div className="top-list">
+              {stats.topProducts.slice(0, 5).map((product, idx) => (
+                <div key={product.productId || idx} className="top-item">
+                  <div className="rank">{idx + 1}</div>
+                  <div className="top-details">
+                    <h4>{product.name || 'Unknown Product'}</h4>
+                    <p>Revenue: ₹{(product.revenue || 0).toLocaleString()}</p>
+                    <p className="text-sm">{product.quantitySold || 0} units sold</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
+
+      {/* Summary Metrics */}
+      {stats?.summary && (
+        <div className="summary-section">
+          <h2>📊 Summary Insights</h2>
+          <div className="summary-cards">
+            <div className="summary-card">
+              <h4>Avg Invoice Value</h4>
+              <p className="summary-value">₹{stats.summary.avgInvoiceValue.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</p>
+            </div>
+            <div className="summary-card">
+              <h4>Avg Payment Time</h4>
+              <p className="summary-value">{stats.summary.avgPaymentTime} days</p>
+            </div>
+            <div className="summary-card">
+              <h4>Collection Rate</h4>
+              <p className="summary-value">{stats.summary.collectionRate}%</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

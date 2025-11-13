@@ -86,6 +86,22 @@ export default function Customers({ user }) {
     }
   };
 
+  const handleDeleteCustomer = async (customerId) => {
+    if (!window.confirm('Are you sure you want to delete this customer? This action cannot be undone.')) {
+      return;
+    }
+    
+    try {
+      const res = await api.delete(`/api/billing/customers/${customerId}`);
+      if (res.data.success) {
+        alert('Customer deleted successfully!');
+        fetchCustomers(); // Refresh the list
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to delete customer');
+    }
+  };
+
   if (loading) {
     return <div className="loading">Loading customers...</div>;
   }
@@ -147,6 +163,7 @@ export default function Customers({ user }) {
                   value={formData.gstin}
                   onChange={handleChange}
                   maxLength="15"
+                  placeholder="Enter GSTIN (15 characters)"
                 />
               </div>
             </div>
@@ -230,6 +247,7 @@ export default function Customers({ user }) {
               <th>Balance</th>
               <th>GSTIN</th>
               <th>City</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -248,6 +266,17 @@ export default function Customers({ user }) {
                   <td>₹{customer.balance?.toLocaleString("en-IN") || 0}</td>
                   <td>{customer.gstin || "N/A"}</td>
                   <td>{customer.address?.city || "N/A"}</td>
+                  <td>
+                    <div className="table-actions">
+                      <button
+                        onClick={() => handleDeleteCustomer(customer._id)}
+                        className="btn-action danger"
+                        title="Delete Customer"
+                      >
+                        🗑️ Delete
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               ))
             )}

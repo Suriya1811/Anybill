@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 import api from "../utils/api";
 import { useTheme } from "../contexts/ThemeContext";
 import "../styles/dashboard.css";
@@ -24,6 +25,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
+  const { logout: authLogout, user: authUser, checkAuth } = useAuth();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -59,11 +61,9 @@ export default function Dashboard() {
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    localStorage.removeItem("tempToken");
-    localStorage.removeItem("tempPhone");
-    navigate("/");
+    if (confirm('Are you sure you want to logout?')) {
+      authLogout(); // Use AuthContext logout
+    }
   };
 
   if (loading) {
@@ -207,7 +207,7 @@ export default function Dashboard() {
         </header>
 
         <div className="dashboard-content">
-          {activeTab === "home" && <DashboardHome user={user} />}
+          {activeTab === "home" && <DashboardHome user={user} onNavigate={setActiveTab} />}
           {activeTab === "invoices" && <Invoices user={user} />}
           {activeTab === "customers" && <Customers user={user} />}
           {activeTab === "products" && <Products user={user} />}

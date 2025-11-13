@@ -149,6 +149,7 @@ export default function Settings({ user, onUpdate }) {
               value={formData.gstin}
               onChange={handleChange}
               maxLength="15"
+              placeholder="Enter GSTIN (15 characters)"
             />
           </div>
 

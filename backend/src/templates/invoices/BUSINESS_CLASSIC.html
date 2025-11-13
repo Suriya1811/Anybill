@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Invoice - {{invoiceNumber}}</title>
+  <style>
+    body { font-family: Georgia, 'Times New Roman', serif; font-size: 12px; color: #1a1a1a; margin: 0; padding: 0; }
+    .container { width: 210mm; min-height: 297mm; margin: 0 auto; padding: 25mm; background: white; }
+    .letterhead { text-align: center; border: 3px double #1a1a1a; padding: 20px; margin-bottom: 30px; }
+    .company-name { font-size: 26px; font-weight: bold; letter-spacing: 2px; }
+    .tagline { font-style: italic; font-size: 11px; color: #555; margin-top: 5px; }
+    .invoice-header { text-align: center; margin: 20px 0; }
+    .invoice-header h1 { font-size: 28px; letter-spacing: 3px; border-bottom: 2px solid #1a1a1a; display: inline-block; padding-bottom: 5px; }
+    .details-grid { display: flex; justify-content: space-between; margin: 30px 0; }
+    .detail-box { flex: 1; padding: 15px; border: 1px solid #1a1a1a; }
+    .detail-box h4 { border-bottom: 1px solid #1a1a1a; padding-bottom: 5px; margin-bottom: 10px; }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; border: 2px solid #1a1a1a; }
+    thead { border-bottom: 2px solid #1a1a1a; }
+    thead th { padding: 12px; text-align: left; font-weight: bold; }
+    tbody td { padding: 10px; border-bottom: 1px solid #ddd; }
+    .totals { margin-top: 20px; float: right; width: 350px; border: 2px solid #1a1a1a; }
+    .totals table { border: none; }
+    .totals tr td { padding: 8px 15px; border: none; }
+    .grand-total { background: #1a1a1a; color: white; font-size: 16px; font-weight: bold; }
+    .signature-section { margin-top: 60px; display: flex; justify-content: space-between; }
+    .signature-box { text-align: center; width: 200px; }
+    .signature-line { border-top: 1px solid #1a1a1a; padding-top: 5px; margin-top: 50px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="letterhead">
+      <div class="company-name">{{businessName}}</div>
+      <div class="tagline">Quality Products & Services Since 2020</div>
+      <p style="margin-top: 10px; font-size: 10px;">{{businessAddress}}<br>
+      Phone: {{businessPhone}} | Email: {{businessEmail}}<br>
+      GSTIN: {{businessGSTIN}}</p>
+    </div>
+
+    <div class="invoice-header">
+      <h1>TAX INVOICE</h1>
+      <p style="margin-top: 10px;">Invoice No: <strong>{{invoiceNumber}}</strong> | Date: <strong>{{invoiceDate}}</strong></p>
+    </div>
+
+    <div class="details-grid">
+      <div class="detail-box" style="margin-right: 15px;">
+        <h4>BILLED TO:</h4>
+        <p><strong>{{customerName}}</strong></p>
+        <p>{{customerAddress}}</p>
+        <p>Phone: {{customerPhone}}</p>
+        <p>GSTIN: {{customerGSTIN}}</p>
+      </div>
+      <div class="detail-box">
+        <h4>PAYMENT TERMS:</h4>
+        <p><strong>Due Date:</strong> {{dueDate}}</p>
+        <p><strong>Payment Status:</strong> {{paymentStatus}}</p>
+        <p><strong>Balance Due:</strong> {{balance}}</p>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 40px;">S.No</th>
+          <th>Particulars</th>
+          <th style="width: 80px;">HSN/SAC</th>
+          <th style="width: 80px;">Quantity</th>
+          <th style="width: 100px;">Rate</th>
+          <th style="width: 60px;">Tax %</th>
+          <th style="width: 120px; text-align: right;">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{itemsTable}}
+      </tbody>
+    </table>
+
+    <div class="totals">
+      <table>
+        <tr><td>Subtotal:</td><td style="text-align: right;">{{subtotal}}</td></tr>
+        <tr><td>CGST:</td><td style="text-align: right;">{{cgst}}</td></tr>
+        <tr><td>SGST:</td><td style="text-align: right;">{{sgst}}</td></tr>
+        <tr><td>IGST:</td><td style="text-align: right;">{{igst}}</td></tr>
+        <tr><td>Discount:</td><td style="text-align: right;">{{discount}}</td></tr>
+        <tr class="grand-total"><td>GRAND TOTAL:</td><td style="text-align: right;">{{total}}</td></tr>
+        <tr><td>Amount Paid:</td><td style="text-align: right;">{{paidAmount}}</td></tr>
+        <tr><td><strong>Balance Due:</strong></td><td style="text-align: right;"><strong>{{balance}}</strong></td></tr>
+      </table>
+    </div>
+
+    <div style="clear: both; margin-top: 30px; padding: 15px; border: 1px solid #1a1a1a;">
+      <p><strong>Terms & Conditions:</strong></p>
+      <p style="font-size: 10px; margin-top: 5px;">{{terms}}</p>
+    </div>
+
+    <div class="signature-section">
+      <div class="signature-box">
+        <div class="signature-line">Customer Signature</div>
+      </div>
+      <div class="signature-box">
+        <div class="signature-line">Authorized Signatory</div>
+      </div>
+    </div>
+
+    <p style="text-align: center; margin-top: 30px; font-size: 10px; color: #777;">
+      This is a computer-generated invoice and is valid without signature.
+    </p>
+  </div>
+</body>
+</html>

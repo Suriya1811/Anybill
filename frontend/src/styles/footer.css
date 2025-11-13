@@ -1,32 +1,35 @@
+/* -------------------------------------------------- */
+/*                        FOOTER                      */
+/* -------------------------------------------------- */
+
 .footer {
-  padding: 40px 0 30px;
+  padding: 60px 0 40px;
   border-top: 1px solid var(--border-color);
+  background: var(--bg-secondary);
   width: 100%;
   margin-top: auto;
-  background: var(--bg-secondary);
 }
 
-:root[data-theme="dark"] .footer {
-  background: var(--bg2);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
+/* Dark / Light theme */
+:root[data-theme="dark"] .footer,
 :root[data-theme="light"] .footer {
-  background: #f8fafb;
+  background: var(--bg-secondary);
   border-top: 1px solid var(--border-color);
 }
 
+/* Footer layout */
 .footer-inner {
   display: flex;
-  gap: 32px;
+  gap: 40px;
   align-items: flex-start;
   justify-content: space-between;
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 var(--desktop-padding);
   width: 100%;
 }
 
+/* Left section */
 .footer-left {
   flex: 1;
 }
@@ -36,7 +39,11 @@
   font-size: 1.5rem;
   margin-bottom: 8px;
   letter-spacing: -0.02em;
-  color: var(--text-primary);
+}
+
+:root[data-theme="dark"] .footer-title,
+:root[data-theme="light"] .footer-title {
+  color: var(--primary-color);
 }
 
 .footer-desc {
@@ -46,6 +53,7 @@
   line-height: 1.6;
 }
 
+/* Links */
 .footer-links {
   display: flex;
   flex-direction: column;
@@ -53,84 +61,130 @@
 }
 
 .footer-links a {
-  color: var(--text-secondary);
   text-decoration: none;
-  transition: all 0.2s ease;
   font-weight: 500;
+  transition: 0.3s ease;
+  color: var(--text-secondary);
+}
+
+:root[data-theme="dark"] .footer-links a {
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .footer-links a:hover {
-  color: var(--text-primary);
-  text-decoration: underline;
+  color: var(--primary-color);
 }
 
+/* Right bottom text */
 .footer-right {
   color: var(--text-tertiary);
   font-size: 0.9rem;
 }
 
+/* -------------------------------------------------- */
+/*                LARGE SCREENS                       */
+/* -------------------------------------------------- */
+
 @media (min-width: 1400px) {
   .footer-inner {
-    padding: 0 40px;
-  }
-  
-  .footer {
-    padding: 50px 0 40px;
+    padding: 0 var(--large-desktop-padding);
   }
 }
 
-@media (max-width: 992px) {
+/* -------------------------------------------------- */
+/*                     TABLET                         */
+/* -------------------------------------------------- */
+
+@media (max-width: 968px) {
   .footer {
-    padding: 32px 0 24px;
+    padding: 40px 0 32px;
   }
-  
+
   .footer-inner {
     flex-direction: column;
     text-align: center;
-    gap: 24px;
+    gap: 28px; /* reduced */
   }
-  
+
   .footer-left {
+    align-items: center;
     display: flex;
     flex-direction: column;
-    align-items: center;
   }
-  
+
   .footer-desc {
     max-width: 100%;
   }
-  
+
   .footer-links {
     flex-direction: row;
     justify-content: center;
     flex-wrap: wrap;
     gap: 20px;
   }
-  
+
+  .footer-links a:hover {
+    transform: translateY(-2px);
+  }
+
   .footer-right {
     text-align: center;
   }
 }
 
-@media (max-width: 768px) {
+/* -------------------------------------------------- */
+/*                 MOBILE (≤576px)                    */
+/* -------------------------------------------------- */
+
+@media (max-width: 576px) {
   .footer {
-    padding: 28px 0 20px;
+    padding: 28px 0 20px; /* smaller height */
   }
-  
+
   .footer-inner {
     gap: 20px;
-    padding: 0 16px;
+    padding: 0 var(--mobile-padding);
   }
-  
+
   .footer-title {
-    font-size: 1.25rem;
+    font-size: 1.2rem; /* smaller, clean */
   }
-  
+
   .footer-links {
-    gap: 12px;
+    gap: 14px;
   }
-  
+
+  .footer-links a {
+    font-size: 0.9rem; /* no big text */
+  }
+
+  .footer-right {
+    font-size: 0.8rem;
+  }
+}
+
+/* -------------------------------------------------- */
+/*            EXTRA SMALL (≤420px)                    */
+/* -------------------------------------------------- */
+
+@media (max-width: 420px) {
+  .footer {
+    padding: 24px 0 16px;
+  }
+
+  .footer-title {
+    font-size: 1.1rem;
+  }
+
   .footer-desc {
     font-size: 0.9rem;
+  }
+
+  .footer-links a {
+    font-size: 0.85rem;
+  }
+
+  .footer-inner {
+    gap: 16px;
   }
 }

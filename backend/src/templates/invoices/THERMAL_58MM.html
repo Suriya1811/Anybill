@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=58mm">
+  <title>Receipt - {{invoiceNumber}}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Courier New', monospace; font-size: 9px; line-height: 1.2; width: 58mm; margin: 0 auto; }
+    .receipt { padding: 3mm; }
+    .center { text-align: center; }
+    .header { text-align: center; margin-bottom: 8px; border-bottom: 1px dashed #000; padding-bottom: 5px; }
+    .company-name { font-size: 13px; font-weight: bold; }
+    .company-info { font-size: 8px; }
+    .divider { border-top: 1px dashed #000; margin: 5px 0; }
+    .item-row { font-size: 9px; margin: 3px 0; }
+    .total-row { display: flex; justify-content: space-between; font-size: 9px; padding: 2px 0; }
+    .grand-total { font-weight: bold; font-size: 11px; border-top: 1px solid #000; padding-top: 3px; }
+    .footer { text-align: center; margin-top: 10px; font-size: 8px; border-top: 1px dashed #000; padding-top: 5px; }
+    @media print { body { width: 58mm; } }
+  </style>
+</head>
+<body>
+  <div class="receipt">
+    <div class="header">
+      <div class="company-name">{{businessName}}</div>
+      <div class="company-info">
+        <p>{{businessPhone}}</p>
+        <p>GSTIN: {{businessGSTIN}}</p>
+      </div>
+    </div>
+
+    <div class="center">
+      <div style="font-weight: bold;">INVOICE</div>
+      <p>{{invoiceNumber}}</p>
+      <p>{{invoiceDate}}</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <div>
+      <strong>Customer:</strong> {{customerName}}<br>
+      {{customerPhone}}
+    </div>
+
+    <div class="divider"></div>
+
+    {{itemsTable}}
+
+    <div class="divider"></div>
+
+    <div class="total-row"><span>Subtotal:</span><span>{{subtotal}}</span></div>
+    <div class="total-row"><span>Tax:</span><span>{{totalTax}}</span></div>
+    <div class="total-row grand-total"><span>TOTAL:</span><span>{{total}}</span></div>
+    <div class="total-row"><span>Paid:</span><span>{{paidAmount}}</span></div>
+    <div class="total-row"><span>Balance:</span><span>{{balance}}</span></div>
+
+    <div class="footer">
+      <p>Thank you!</p>
+    </div>
+  </div>
+</body>
+</html>

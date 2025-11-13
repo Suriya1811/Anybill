@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice - {{invoiceNumber}}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Arial', sans-serif; font-size: 12px; line-height: 1.5; color: #333; }
+    .container { width: 210mm; min-height: 297mm; margin: 0 auto; padding: 20mm; background: white; }
+    .header { display: flex; justify-content: space-between; margin-bottom: 30px; border-bottom: 3px solid #2c3e50; padding-bottom: 20px; }
+    .company-details { flex: 1; }
+    .company-name { font-size: 24px; font-weight: bold; color: #2c3e50; margin-bottom: 5px; }
+    .company-info { font-size: 11px; color: #555; line-height: 1.8; }
+    .invoice-title { text-align: right; flex: 1; }
+    .invoice-title h1 { font-size: 32px; color: #2c3e50; margin-bottom: 10px; }
+    .invoice-meta { font-size: 11px; color: #555; }
+    .invoice-meta strong { color: #2c3e50; }
+    .section { margin-bottom: 25px; }
+    .section-title { font-size: 14px; font-weight: bold; color: #2c3e50; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 2px solid #ecf0f1; }
+    .billing-info { display: flex; justify-content: space-between; gap: 30px; }
+    .billing-box { flex: 1; padding: 15px; background: #f8f9fa; border-radius: 5px; }
+    .billing-box h3 { font-size: 12px; font-weight: bold; color: #2c3e50; margin-bottom: 10px; }
+    .billing-box p { margin: 3px 0; font-size: 11px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    thead { background: #2c3e50; color: white; }
+    thead th { padding: 12px 8px; text-align: left; font-size: 11px; font-weight: bold; }
+    tbody td { padding: 10px 8px; border-bottom: 1px solid #ecf0f1; font-size: 11px; }
+    tbody tr:hover { background: #f8f9fa; }
+    .text-right { text-align: right; }
+    .text-center { text-align: center; }
+    .totals { margin-top: 30px; display: flex; justify-content: flex-end; }
+    .totals-table { width: 400px; }
+    .totals-table tr td { padding: 8px 15px; font-size: 12px; }
+    .totals-table tr td:first-child { text-align: right; font-weight: bold; }
+    .totals-table tr td:last-child { text-align: right; }
+    .grand-total { background: #2c3e50; color: white; font-size: 14px; font-weight: bold; }
+    .payment-status { display: inline-block; padding: 5px 15px; border-radius: 20px; font-size: 11px; font-weight: bold; margin-top: 10px; }
+    .status-paid { background: #27ae60; color: white; }
+    .status-partial { background: #f39c12; color: white; }
+    .status-unpaid { background: #e74c3c; color: white; }
+    .notes-section { margin-top: 30px; padding: 15px; background: #f8f9fa; border-left: 4px solid #2c3e50; }
+    .notes-section h4 { font-size: 12px; margin-bottom: 8px; color: #2c3e50; }
+    .notes-section p { font-size: 11px; color: #555; }
+    .footer { margin-top: 40px; padding-top: 20px; border-top: 2px solid #ecf0f1; text-align: center; font-size: 10px; color: #777; }
+    @media print { .container { margin: 0; padding: 15mm; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="company-details">
+        <div class="company-name">{{businessName}}</div>
+        <div class="company-info">
+          <p>{{businessAddress}}</p>
+          <p>Phone: {{businessPhone}}</p>
+          <p>Email: {{businessEmail}}</p>
+          <p>GSTIN: {{businessGSTIN}}</p>
+        </div>
+      </div>
+      <div class="invoice-title">
+        <h1>INVOICE</h1>
+        <div class="invoice-meta">
+          <p><strong>Invoice #:</strong> {{invoiceNumber}}</p>
+          <p><strong>Date:</strong> {{invoiceDate}}</p>
+          <p><strong>Due Date:</strong> {{dueDate}}</p>
+          <p class="payment-status status-{{paymentStatus}}">{{paymentStatus}}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Billing Information -->
+    <div class="section">
+      <div class="billing-info">
+        <div class="billing-box">
+          <h3>BILL TO:</h3>
+          <p><strong>{{customerName}}</strong></p>
+          <p>{{customerAddress}}</p>
+          <p>Phone: {{customerPhone}}</p>
+          <p>Email: {{customerEmail}}</p>
+          <p>GSTIN: {{customerGSTIN}}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Items Table -->
+    <div class="section">
+      <div class="section-title">ITEMS</div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 40px;">#</th>
+            <th>Description</th>
+            <th style="width: 100px;">Quantity</th>
+            <th class="text-right" style="width: 100px;">Rate</th>
+            <th class="text-right" style="width: 80px;">Tax</th>
+            <th class="text-right" style="width: 120px;">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{itemsTable}}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Totals -->
+    <div class="totals">
+      <table class="totals-table">
+        <tr>
+          <td>Subtotal:</td>
+          <td>{{subtotal}}</td>
+        </tr>
+        <tr>
+          <td>Discount:</td>
+          <td>{{discount}}</td>
+        </tr>
+        <tr>
+          <td>CGST:</td>
+          <td>{{cgst}}</td>
+        </tr>
+        <tr>
+          <td>SGST:</td>
+          <td>{{sgst}}</td>
+        </tr>
+        <tr>
+          <td>IGST:</td>
+          <td>{{igst}}</td>
+        </tr>
+        <tr class="grand-total">
+          <td>TOTAL:</td>
+          <td>{{total}}</td>
+        </tr>
+        <tr>
+          <td>Paid Amount:</td>
+          <td style="color: #27ae60; font-weight: bold;">{{paidAmount}}</td>
+        </tr>
+        <tr>
+          <td>Balance Due:</td>
+          <td style="color: #e74c3c; font-weight: bold;">{{balance}}</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Notes -->
+    <div class="notes-section">
+      <h4>Notes:</h4>
+      <p>{{notes}}</p>
+    </div>
+
+    <div class="notes-section" style="margin-top: 15px;">
+      <h4>Terms & Conditions:</h4>
+      <p>{{terms}}</p>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>Thank you for your business!</p>
+      <p>This is a computer-generated invoice and does not require a signature.</p>
+    </div>
+  </div>
+</body>
+</html>

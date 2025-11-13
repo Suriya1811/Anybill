@@ -28,6 +28,12 @@ const invoiceItemSchema = new mongoose.Schema({
     required: true,
     min: 0
   },
+  // Cost price for profit calculation
+  costPrice: {
+    type: Number,
+    default: 0,
+    min: 0
+  },
   taxRate: {
     type: Number,
     default: 0,
@@ -58,6 +64,11 @@ const invoiceItemSchema = new mongoose.Schema({
   total: {
     type: Number,
     required: true
+  },
+  // Profit per item = (price - costPrice) * quantity
+  itemProfit: {
+    type: Number,
+    default: 0
   }
 });
 
@@ -143,6 +154,21 @@ const invoiceSchema = new mongoose.Schema(
       enum: ["draft", "sent", "paid", "partial", "overdue", "cancelled", "accepted", "rejected", "converted"],
       default: "draft"
     },
+    // Payment tracking
+    paymentHistory: [
+      {
+        paidAmount: { type: Number, required: true },
+        paymentDate: { type: Date, default: Date.now },
+        paymentMethod: { type: String, default: "Cash" },
+        note: { type: String, default: "" },
+        recordedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" }
+      }
+    ],
+    // Total profit for this invoice
+    profit: {
+      type: Number,
+      default: 0
+    },
     // For quotations/estimates
     validUntil: {
       type: Date,
@@ -210,7 +236,19 @@ const invoiceSchema = new mongoose.Schema(
     // Template customization
     templateId: {
       type: String,
-      default: "default"
+      default: "A4_CLASSIC",
+      enum: [
+        "A4_CLASSIC",
+        "A5_COMPACT",
+        "THERMAL_80MM",
+        "THERMAL_58MM",
+        "MODERN",
+        "BUSINESS_CLASSIC",
+        "PROFORMA",
+        "DELIVERY_CHALLAN",
+        "RETAIL",
+        "default" // Keep for backward compatibility
+      ]
     },
     // Soft delete for recovery
     isDeleted: {
@@ -254,6 +292,46 @@ const invoiceSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+// Pre-save middleware to auto-calculate balance, status, and profit
+invoiceSchema.pre('save', function(next) {
+  // Calculate balance
+  this.balance = this.total - (this.paidAmount || 0);
+  
+  // Auto-update status based on payment and balance
+  // PAID: balance is 0 or negative (fully paid)
+  if (this.balance <= 0 && this.total > 0) {
+    this.status = 'paid';
+  } 
+  // PARTIALLY PAID: some amount paid but balance remains
+  else if (this.paidAmount > 0 && this.balance > 0 && this.balance < this.total) {
+    this.status = 'partial';
+  } 
+  // UNPAID: no payment made
+  else if (this.paidAmount === 0 || this.balance === this.total) {
+    // Keep as draft if never sent, otherwise mark as sent
+    if (this.status === 'paid' || this.status === 'partial') {
+      this.status = 'sent'; // Change from paid/partial to sent when unmarked
+    }
+    // If already draft or sent, keep that status
+  }
+  
+  // Check for overdue status
+  if (this.balance > 0 && this.dueDate && new Date(this.dueDate) < new Date() && this.status !== 'paid') {
+    this.status = 'overdue';
+  }
+  
+  // Calculate profit from items
+  if (this.items && this.items.length > 0) {
+    this.profit = this.items.reduce((total, item) => {
+      const itemProfit = (item.price - (item.costPrice || 0)) * item.quantity;
+      item.itemProfit = itemProfit;
+      return total + itemProfit;
+    }, 0);
+  }
+  
+  next();
+});
 
 // Indexes for faster queries
 invoiceSchema.index({ userId: 1, invoiceDate: -1 });

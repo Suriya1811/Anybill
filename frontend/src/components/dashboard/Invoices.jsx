@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../../utils/api";
+import InvoiceEditor from "../InvoiceEditor";
+import TemplateSelectorModal from "../TemplateSelectorModal";
 
 export default function Invoices({ user }) {
   const [invoices, setInvoices] = useState([]);
@@ -7,6 +9,9 @@ export default function Invoices({ user }) {
   const [showForm, setShowForm] = useState(false);
   const [customers, setCustomers] = useState([]);
   const [products, setProducts] = useState([]);
+  const [showEditor, setShowEditor] = useState(false);
+  const [showTemplateSelector, setShowTemplateSelector] = useState(false);
+  const [selectedInvoiceId, setSelectedInvoiceId] = useState(null);
   const [formData, setFormData] = useState({
     customerId: "",
     invoiceDate: new Date().toISOString().split("T")[0],
@@ -118,6 +123,69 @@ export default function Invoices({ user }) {
       }
     } catch (err) {
       alert(err.response?.data?.message || "Failed to create invoice");
+    }
+  };
+
+  const handleEditPayment = (invoiceId) => {
+    setSelectedInvoiceId(invoiceId);
+    setShowEditor(true);
+  };
+
+  const handlePrintInvoice = (invoiceId) => {
+    setSelectedInvoiceId(invoiceId);
+    setShowTemplateSelector(true);
+  };
+
+  const handleQuickDownload = async (invoiceId) => {
+    try {
+      const token = localStorage.getItem('token');
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      
+      console.log('Downloading invoice:', invoiceId);
+      
+      const response = await api.post(
+        `/api/billing/invoices/${invoiceId}/print`,
+        { template: 'A4_CLASSIC', format: 'HTML' },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      console.log('Response:', response.data);
+
+      if (response.data && response.data.success && response.data.html) {
+        const printWindow = window.open('', '_blank');
+        if (!printWindow) {
+          alert('Please allow popups for this site to download invoices');
+          return;
+        }
+        printWindow.document.write(response.data.html);
+        printWindow.document.close();
+        printWindow.onload = () => {
+          setTimeout(() => {
+            printWindow.print();
+          }, 500);
+        };
+      } else {
+        alert('Failed to generate invoice. No HTML content received.');
+      }
+    } catch (error) {
+      console.error('Download error:', error);
+      alert('Failed to download invoice. Error: ' + (error.response?.data?.message || error.message));
+    }
+  };
+
+  const handleDeleteInvoice = async (invoiceId) => {
+    if (!window.confirm('Are you sure you want to delete this invoice? This action cannot be undone.')) {
+      return;
+    }
+    
+    try {
+      const res = await api.delete(`/api/billing/invoices/${invoiceId}`);
+      if (res.data.success) {
+        alert('Invoice deleted successfully!');
+        fetchInvoices(); // Refresh the list
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to delete invoice');
     }
   };
 
@@ -337,12 +405,13 @@ export default function Invoices({ user }) {
               <th>Paid</th>
               <th>Balance</th>
               <th>Status</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {invoices.length === 0 ? (
               <tr>
-                <td colSpan="8" style={{ textAlign: "center", padding: "40px" }}>
+                <td colSpan="9" style={{ textAlign: "center", padding: "40px" }}>
                   No invoices found. Create your first invoice!
                 </td>
               </tr>
@@ -357,18 +426,41 @@ export default function Invoices({ user }) {
                   <td>₹{invoice.paidAmount?.toLocaleString("en-IN") || 0}</td>
                   <td>₹{invoice.balance?.toLocaleString("en-IN") || 0}</td>
                   <td>
-                    <span
-                      style={{
-                        padding: "4px 12px",
-                        borderRadius: "12px",
-                        background: getStatusColor(invoice.status) + "20",
-                        color: getStatusColor(invoice.status),
-                        fontSize: "0.85rem",
-                        fontWeight: "600",
-                      }}
-                    >
+                    <span className={`status-badge status-${invoice.status}`}>
                       {invoice.status?.toUpperCase()}
                     </span>
+                  </td>
+                  <td>
+                    <div className="table-actions">
+                      <button
+                        onClick={() => handleEditPayment(invoice._id)}
+                        className="btn-action success"
+                        title="Edit Payment"
+                      >
+                        Pay
+                      </button>
+                      <button
+                        onClick={() => handleQuickDownload(invoice._id)}
+                        className="btn-action success"
+                        title="Quick Download/Print"
+                      >
+                        Download
+                      </button>
+                      <button
+                        onClick={() => handlePrintInvoice(invoice._id)}
+                        className="btn-action info"
+                        title="Choose Template & Print"
+                      >
+                        Templates
+                      </button>
+                      <button
+                        onClick={() => handleDeleteInvoice(invoice._id)}
+                        className="btn-action danger"
+                        title="Delete Invoice"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))
@@ -376,6 +468,29 @@ export default function Invoices({ user }) {
           </tbody>
         </table>
       </div>
+
+      {/* Invoice Editor Modal */}
+      {showEditor && selectedInvoiceId && (
+        <InvoiceEditor
+          invoiceId={selectedInvoiceId}
+          onClose={() => {
+            setShowEditor(false);
+            setSelectedInvoiceId(null);
+          }}
+          onUpdate={fetchInvoices}
+        />
+      )}
+
+      {/* Template Selector Modal */}
+      {showTemplateSelector && selectedInvoiceId && (
+        <TemplateSelectorModal
+          invoiceId={selectedInvoiceId}
+          onClose={() => {
+            setShowTemplateSelector(false);
+            setSelectedInvoiceId(null);
+          }}
+        />
+      )}
     </div>
   );
 }

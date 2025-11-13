@@ -48,6 +48,36 @@ export default function Warehouses({ user }) {
     }
   };
 
+  const handleDelete = async (warehouseId) => {
+    if (confirm('Are you sure you want to delete this warehouse?')) {
+      try {
+        await warehouseService.delete(warehouseId);
+        fetchWarehouses();
+      } catch (err) {
+        alert('Failed to delete warehouse: ' + err.response?.data?.message);
+      }
+    }
+  };
+
+  const handleSetDefault = async (warehouseId) => {
+    try {
+      await warehouseService.setDefault(warehouseId);
+      fetchWarehouses();
+    } catch (err) {
+      alert('Failed to set default warehouse: ' + err.response?.data?.message);
+    }
+  };
+
+  const handleToggleStatus = async (warehouseId, currentStatus) => {
+    try {
+      await warehouseService.update(warehouseId, { isActive: !currentStatus });
+      fetchWarehouses();
+    } catch (err) {
+      alert('Failed to update warehouse status: ' + err.response?.data?.message);
+    }
+  };
+
+
   if (loading) return <div className="loading">Loading...</div>;
 
   return (
@@ -190,8 +220,11 @@ export default function Warehouses({ user }) {
                     {wh.isActive ? <span className="badge success">Active</span> : <span className="badge">Inactive</span>}
                   </td>
                   <td>
-                    <button className="btn-sm">Edit</button>
-                    <button className="btn-sm danger">Delete</button>
+                    <div className="table-actions">
+                      <button className="btn-action danger" onClick={() => handleDelete(wh._id)}>
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))

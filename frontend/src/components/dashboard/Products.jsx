@@ -92,6 +92,22 @@ export default function Products({ user }) {
     }
   };
 
+  const handleDeleteProduct = async (productId) => {
+    if (!window.confirm('Are you sure you want to delete this product? This action cannot be undone.')) {
+      return;
+    }
+    
+    try {
+      const res = await api.delete(`/api/billing/products/${productId}`);
+      if (res.data.success) {
+        alert('Product deleted successfully!');
+        fetchProducts(); // Refresh the list
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to delete product');
+    }
+  };
+
   if (loading) {
     return <div className="loading">Loading products...</div>;
   }
@@ -292,6 +308,7 @@ export default function Products({ user }) {
               <th>Tax Rate</th>
               <th>Stock</th>
               <th>Category</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -314,6 +331,17 @@ export default function Products({ user }) {
                       : "N/A"}
                   </td>
                   <td>{product.category}</td>
+                  <td>
+                    <div className="table-actions">
+                      <button
+                        onClick={() => handleDeleteProduct(product._id)}
+                        className="btn-action danger"
+                        title="Delete Product"
+                      >
+                        🗑️ Delete
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               ))
             )}

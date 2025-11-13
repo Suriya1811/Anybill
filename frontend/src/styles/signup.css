@@ -1,3 +1,7 @@
+/* -----------------------------------------------------------
+   SIGNUP PAGE – CLEAN + RESPONSIVE + PERFECT ALIGNMENT
+------------------------------------------------------------ */
+
 .page-signup {
   padding: 100px 0;
   width: 100%;
@@ -9,35 +13,44 @@
 
 .signup-container {
   width: 100%;
-  max-width: 600px;
+  max-width: 650px;
   margin: 0 auto;
   padding: 0 24px;
 }
 
 .signup-card {
   padding: 48px;
-  text-align: center;
+  border-radius: var(--radius);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-lg);
 }
 
 .signup-header {
   margin-bottom: 40px;
+  text-align: center;
 }
 
 .signup-header .h1 {
   margin-bottom: 12px;
+  font-weight: 700;
 }
 
 .signup-header .lead {
   margin: 0 auto;
-  max-width: 500px;
+  max-width: 520px;
+  color: var(--text-secondary);
+  line-height: 1.7;
 }
 
+/* CONTENT AREA */
 .signup-content {
   display: flex;
   flex-direction: column;
   gap: 32px;
 }
 
+/* INFO BOX */
 .info-box {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -45,7 +58,7 @@
   padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
   text-align: left;
 }
 
@@ -56,27 +69,29 @@
   line-height: 1.6;
 }
 
+/* BENEFITS GRID */
 .signup-benefits {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
   padding: 24px;
-  background: rgba(255, 255, 255, 0.02);
   border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .benefit-item {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   color: var(--muted-light);
-  font-size: 0.95rem;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
 .benefit-icon {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: var(--accent-gradient);
   color: #0a0e27;
@@ -84,17 +99,21 @@
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  font-size: 0.85rem;
-  flex-shrink: 0;
+  font-size: 0.9rem;
 }
 
+/* ACTION BUTTON */
 .signup-actions {
   display: flex;
   justify-content: center;
+  margin-top: 8px;
 }
 
 .signup-actions .btn {
-  min-width: 200px;
+  min-width: 220px;
+  height: 48px;
+  font-size: 1.05rem;
+  border-radius: var(--radius);
 }
 
 .signup-actions .btn:disabled {
@@ -102,36 +121,98 @@
   cursor: not-allowed;
 }
 
+/* -----------------------------------------------------------
+   WIDE DESKTOP
+------------------------------------------------------------ */
 @media (min-width: 1400px) {
   .signup-container {
     padding: 0 40px;
   }
 }
 
-@media (max-width: 768px) {
-  .page-signup {
-    padding: 60px 0;
-  }
-  
+/* -----------------------------------------------------------
+   TABLET RESPONSIVE
+------------------------------------------------------------ */
+@media (max-width: 900px) {
   .signup-card {
-    padding: 32px;
+    padding: 40px;
   }
-  
-  .signup-header {
-    margin-bottom: 32px;
-  }
-  
-  .info-box {
-    padding: 20px;
-  }
-  
+
   .signup-benefits {
-    grid-template-columns: 1fr;
     padding: 20px;
-  }
-  
-  .signup-actions .btn {
-    width: 100%;
+    gap: 16px;
   }
 }
 
+/* -----------------------------------------------------------
+   MOBILE RESPONSIVE – PERFECT ALIGNMENT
+------------------------------------------------------------ */
+@media (max-width: 768px) {
+
+  .page-signup {
+    padding: 60px 0;
+  }
+
+  .signup-card {
+    padding: 32px 24px;
+  }
+
+  .signup-header {
+    margin-bottom: 28px;
+  }
+
+  .signup-header .h1 {
+    font-size: 1.8rem;
+  }
+
+  .signup-header .lead {
+    font-size: 0.95rem;
+  }
+
+  .info-box {
+    padding: 20px;
+    gap: 12px;
+  }
+
+  .signup-benefits {
+    grid-template-columns: 1fr;  /* full width */
+    padding: 20px;
+  }
+
+  .benefit-item {
+    font-size: 0.95rem;
+  }
+
+  .signup-actions .btn {
+    width: 100%;
+    font-size: 1rem;
+    height: 46px;
+  }
+}
+
+/* -----------------------------------------------------------
+   VERY SMALL MOBILE (iPhone SE)
+------------------------------------------------------------ */
+@media (max-width: 480px) {
+
+  .signup-card {
+    padding: 26px 18px;
+  }
+
+  .signup-header .h1 {
+    font-size: 1.6rem;
+  }
+
+  .signup-header .lead {
+    font-size: 0.9rem;
+  }
+
+  .benefit-item {
+    font-size: 0.9rem;
+  }
+
+  .signup-actions .btn {
+    height: 44px;
+    font-size: 0.95rem;
+  }
+}

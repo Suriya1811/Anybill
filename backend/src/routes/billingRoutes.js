@@ -5,8 +5,13 @@ const Customer = require("../models/Customer");
 const Product = require("../models/Product");
 const Invoice = require("../models/Invoice");
 const Business = require("../models/Business");
+const InvoiceAudit = require("../models/InvoiceAudit");
 const axios = require("axios");
 const TWO_FACTOR_API_KEY = process.env.TWO_FACTOR_API_KEY || "747ae4d3-bdff-11f0-bdde-0200cd936042";
+
+// Import controllers
+const invoiceTemplateController = require("../controllers/invoiceTemplateController");
+const invoicePaymentController = require("../controllers/invoicePaymentController");
 
 // Initialize Twilio client if available
 let twilioClient = null;
@@ -227,7 +232,7 @@ router.post("/invoices", verifyToken, async (req, res) => {
       challanNumber,
       vehicleNumber,
       transporterName,
-      templateId = "default"
+      templateId = "A4_CLASSIC"
     } = req.body;
 
     // Get customer details
@@ -242,7 +247,18 @@ router.post("/invoices", verifyToken, async (req, res) => {
       return res.status(404).json({ message: "Business profile not found" });
     }
 
-    // Generate document number based on type
+    // Ensure invoiceSettings exists
+    if (!business.invoiceSettings) {
+      business.invoiceSettings = {
+        prefix: "INV",
+        nextNumber: 1,
+        footerText: "Thank you for your business!",
+        taxIncluded: false
+      };
+      await business.save();
+    }
+
+    // Generate unique document number with retry logic
     const prefixes = {
       invoice: business.invoiceSettings.prefix || "INV",
       delivery_challan: "DC",
@@ -252,7 +268,35 @@ router.post("/invoices", verifyToken, async (req, res) => {
     };
     
     const prefix = prefixes[documentType] || "INV";
-    const invoiceNumber = `${prefix}-${String(business.invoiceSettings.nextNumber).padStart(6, "0")}`;
+    let invoiceNumber;
+    let attempts = 0;
+    const maxAttempts = 10;
+    
+    // Try to generate unique invoice number
+    while (attempts < maxAttempts) {
+      // Get the latest nextNumber and increment atomically
+      const updatedBusiness = await Business.findOneAndUpdate(
+        { userId: req.user.id },
+        { $inc: { "invoiceSettings.nextNumber": 1 } },
+        { new: true }
+      );
+      
+      const currentNumber = updatedBusiness.invoiceSettings.nextNumber - 1; // Use the number before increment
+      invoiceNumber = `${prefix}-${String(currentNumber).padStart(6, "0")}`;
+      
+      // Check if this invoice number already exists
+      const existingInvoice = await Invoice.findOne({ invoiceNumber });
+      if (!existingInvoice) {
+        break; // Unique number found
+      }
+      
+      attempts++;
+      if (attempts >= maxAttempts) {
+        return res.status(500).json({ 
+          message: "Failed to generate unique invoice number. Please try again." 
+        });
+      }
+    }
 
     // Calculate totals
     let subtotal = 0;
@@ -287,6 +331,7 @@ router.post("/invoices", verifyToken, async (req, res) => {
 
       return {
         ...item,
+        costPrice: item.costPrice || 0, // Include cost price for profit calculation
         subtotal: itemSubtotal,
         taxAmount: itemTax,
         total: itemSubtotal + itemTax,
@@ -362,12 +407,6 @@ router.post("/invoices", verifyToken, async (req, res) => {
     
     const invoice = await Invoice.create(invoiceData);
 
-    // Update document number in business settings
-    await Business.findOneAndUpdate(
-      { userId: req.user.id },
-      { $inc: { "invoiceSettings.nextNumber": 1 } }
-    );
-
     // Update customer balance only for invoices/proforma invoices
     if (shouldUpdateBalance) {
       await Customer.findByIdAndUpdate(customerId, {
@@ -408,48 +447,19 @@ router.put("/invoices/:id", verifyToken, async (req, res) => {
 });
 
 // Update invoice payment
-router.post("/invoices/:id/payment", verifyToken, async (req, res) => {
-  try {
-    const { paidAmount } = req.body;
-    const invoice = await Invoice.findOne({
-      _id: req.params.id,
-      userId: req.user.id
-    });
+router.post("/invoices/:id/payment", verifyToken, invoicePaymentController.updatePayment);
 
-    if (!invoice) {
-      return res.status(404).json({ message: "Invoice not found" });
-    }
+// Set exact payment amount
+router.put("/invoices/:id/payment", verifyToken, invoicePaymentController.setPayment);
 
-    const newPaidAmount = (invoice.paidAmount || 0) + paidAmount;
-    const balance = invoice.total - newPaidAmount;
-    let status = invoice.status;
+// Get payment history
+router.get("/invoices/:id/payment-history", verifyToken, invoicePaymentController.getPaymentHistory);
 
-    if (balance <= 0) {
-      status = "paid";
-    } else if (newPaidAmount > 0) {
-      status = "partial";
-    }
+// Get outstanding summary
+router.get("/outstanding-summary", verifyToken, invoicePaymentController.getOutstandingSummary);
 
-    const updatedInvoice = await Invoice.findByIdAndUpdate(
-      req.params.id,
-      {
-        paidAmount: newPaidAmount,
-        balance,
-        status,
-      },
-      { new: true }
-    );
-
-    // Update customer balance
-    await Customer.findByIdAndUpdate(invoice.customerId, {
-      $inc: { balance: -paidAmount }
-    });
-
-    res.json({ success: true, invoice: updatedInvoice });
-  } catch (err) {
-    res.status(500).json({ message: "Failed to update payment: " + err.message });
-  }
-});
+// Get profit summary
+router.get("/profit-summary", verifyToken, invoicePaymentController.getProfitSummary);
 
 // Delete invoice (soft delete for recovery)
 router.delete("/invoices/:id", verifyToken, async (req, res) => {
@@ -517,7 +527,7 @@ router.post("/invoices/:id/recover", verifyToken, async (req, res) => {
 // Share invoice via WhatsApp/SMS/Email
 router.post("/invoices/:id/share", verifyToken, async (req, res) => {
   try {
-    const { method, phone, email } = req.body; // method: 'whatsapp', 'sms', 'email'
+    const { method, phone, email, template = 'A4_CLASSIC' } = req.body; // method: 'whatsapp', 'sms', 'email'
     const invoice = await Invoice.findOne({
       _id: req.params.id,
       userId: req.user.id,
@@ -532,9 +542,10 @@ router.post("/invoices/:id/share", verifyToken, async (req, res) => {
     const sharePhone = phone || invoice.customerDetails.phone;
     const shareEmail = email || invoice.customerDetails.email;
 
-    // Generate share message
-    const invoiceUrl = `${process.env.FRONTEND_URL || "http://localhost:5173"}/invoice/${invoice._id}`;
-    const message = `Your ${business?.businessName || "Invoice"} - ${invoice.invoiceNumber}\nAmount: ₹${invoice.total}\nView: ${invoiceUrl}`;
+    // Generate share URLs
+    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+    const invoiceViewUrl = `${frontendUrl}/invoice/${invoice._id}`;
+    const invoicePreviewUrl = `${frontendUrl}/invoice-preview/${invoice._id}?template=${template}`;
 
     if (method === "sms") {
       if (!TWO_FACTOR_API_KEY) {
@@ -557,7 +568,73 @@ router.post("/invoices/:id/share", verifyToken, async (req, res) => {
         return res.status(500).json({ message: `Failed to send SMS: ${err.message}` });
       }
     } else if (method === "whatsapp") {
-      return res.status(400).json({ message: "WhatsApp sharing not configured" });
+      // WhatsApp Web Share - Opens WhatsApp with pre-filled message
+      if (!sharePhone) {
+        return res.status(400).json({ message: "Phone number required for WhatsApp sharing" });
+      }
+
+      try {
+        // Clean and format phone number for WhatsApp
+        const whatsappPhone = String(sharePhone).replace(/[^\d+]/g, "");
+        if (!whatsappPhone || whatsappPhone.length < 10) {
+          return res.status(400).json({ message: "Invalid phone number format" });
+        }
+
+        // Remove leading + for WhatsApp API
+        const cleanPhone = whatsappPhone.replace(/^\+/, "");
+        
+        // Create detailed invoice message with template preview link
+        const templateName = template.replace(/_/g, ' ');
+        
+        // Build message line by line to ensure proper formatting
+        const messageParts = [
+          `🧾 *Invoice from ${business?.businessName || "MyBillPro"}*`,
+          ``,
+          `📋 Invoice No: *${invoice.invoiceNumber}*`,
+          `👤 Customer: ${invoice.customerDetails.name}`,
+          `📅 Date: ${new Date(invoice.invoiceDate).toLocaleDateString('en-IN')}`,
+          `💰 Amount: *₹${invoice.total.toLocaleString('en-IN')}*`,
+          `✅ Paid: ₹${(invoice.paidAmount || 0).toLocaleString('en-IN')}`,
+          `⏳ Balance: ₹${(invoice.balance || 0).toLocaleString('en-IN')}`,
+          ``,
+          `📄 Template: ${templateName}`,
+          `📱 View Invoice:`,
+          invoicePreviewUrl,
+          ``,
+          `Thank you for your business! 🙏`
+        ];
+        
+        const whatsappMessage = messageParts.join('\n');
+        
+        // Log the message for debugging
+        console.log('\n' + '='.repeat(70));
+        console.log('📱 WhatsApp Share Debug Info:');
+        console.log('='.repeat(70));
+        console.log('Phone:', cleanPhone);
+        console.log('Frontend URL:', frontendUrl);
+        console.log('Invoice Preview URL:', invoicePreviewUrl);
+        console.log('\nMessage to be sent:');
+        console.log(whatsappMessage);
+        console.log('='.repeat(70) + '\n');
+
+        // Generate WhatsApp Web URL
+        const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(whatsappMessage)}`;
+        
+        console.log('Full WhatsApp URL (first 200 chars):', whatsappUrl.substring(0, 200));
+        console.log('URL Length:', whatsappUrl.length);
+
+        return res.json({ 
+          success: true, 
+          message: "WhatsApp share link generated",
+          whatsappUrl,
+          phone: sharePhone,
+          template,
+          previewUrl: invoicePreviewUrl
+        });
+      } catch (err) {
+        console.error('WhatsApp share error:', err);
+        return res.status(500).json({ message: `Failed to generate WhatsApp link: ${err.message}` });
+      }
     } else if (method === "email") {
       // Email sharing - you can integrate with nodemailer or similar
       // For now, return success with email details
@@ -627,7 +704,18 @@ router.post("/invoices/:id/convert", verifyToken, async (req, res) => {
   }
 });
 
-// ========== DASHBOARD STATS ==========
+// ========== INVOICE TEMPLATE & PRINTING ROUTES ==========
+
+// Get available templates
+router.get("/templates", verifyToken, invoiceTemplateController.getAvailableTemplates);
+
+// Print invoice with template
+router.post("/invoices/:id/print", verifyToken, invoiceTemplateController.printInvoice);
+
+// Preview invoice template - PUBLIC ACCESS for sharing
+router.get("/invoices/:id/preview", invoiceTemplateController.previewTemplate);
+
+// ========== DASHBOARD STATS WITH COMPREHENSIVE LOGIC ==========
 
 router.get("/stats", verifyToken, async (req, res) => {
   try {
@@ -640,6 +728,7 @@ router.get("/stats", verifyToken, async (req, res) => {
       if (endDate) query.invoiceDate.$lte = new Date(endDate);
     }
 
+    // Fetch all required data in parallel for performance
     const [
       totalInvoices,
       totalCustomers,
@@ -647,6 +736,9 @@ router.get("/stats", verifyToken, async (req, res) => {
       invoices,
       paidInvoices,
       pendingInvoices,
+      overdueInvoices,
+      products,
+      customers
     ] = await Promise.all([
       Invoice.countDocuments({ ...query, documentType: "invoice" }),
       Customer.countDocuments({ userId: req.user.id, isActive: true }),
@@ -654,29 +746,201 @@ router.get("/stats", verifyToken, async (req, res) => {
       Invoice.find({ ...query, documentType: "invoice" }),
       Invoice.find({ ...query, documentType: "invoice", status: "paid" }),
       Invoice.find({ ...query, documentType: "invoice", status: { $in: ["draft", "sent", "partial"] } }),
+      Invoice.find({ 
+        userId: req.user.id, 
+        isDeleted: false,
+        documentType: "invoice",
+        status: { $in: ["sent", "partial"] },
+        dueDate: { $lt: new Date() }
+      }).populate("customerId", "name phone email"),
+      Product.find({ userId: req.user.id, isActive: true }),
+      Customer.find({ userId: req.user.id, isActive: true })
     ]);
 
-    const totalRevenue = invoices.reduce((sum, inv) => sum + (inv.paidAmount || 0), 0);
-    const totalPending = invoices.reduce((sum, inv) => sum + inv.balance, 0);
+    // === DASHBOARD CALCULATIONS ===
+    
+    // Total Revenue = sum of all PAID invoices
+    const totalRevenue = paidInvoices.reduce((sum, inv) => sum + (inv.paidAmount || 0), 0);
+    
+    // Total Sales = sum of ALL invoice totals (paid + pending)
     const totalSales = invoices.reduce((sum, inv) => sum + inv.total, 0);
+    
+    // Pending Amount = sum of all PENDING invoice balances
+    const totalPending = invoices.reduce((sum, inv) => sum + inv.balance, 0);
+
+    // === LOW STOCK ALERTS ===
+    const lowStockProducts = products.filter(p => {
+      const currentStock = p.stock?.quantity || 0;
+      const lowStockAlert = p.stock?.lowStockAlert || 0;
+      const trackInventory = p.stock?.trackInventory || false;
+      return trackInventory && currentStock > 0 && currentStock <= lowStockAlert;
+    }).map(p => ({
+      productId: p._id,
+      name: p.name,
+      currentStock: p.stock?.quantity || 0,
+      lowStockAlert: p.stock?.lowStockAlert || 0,
+      unit: p.unit
+    }));
+
+    // === PAYMENT DUE REMINDERS (Overdue Invoices) ===
+    const paymentReminders = overdueInvoices
+      .filter(inv => inv.customerId && inv.balance > 0)
+      .map(inv => ({
+        invoiceId: inv._id,
+        invoiceNumber: inv.invoiceNumber || 'N/A',
+        customer: {
+          id: inv.customerId._id,
+          name: inv.customerId.name || 'Unknown Customer',
+          phone: inv.customerId.phone || '',
+          email: inv.customerId.email || ''
+        },
+        amount: inv.total || 0,
+        balance: inv.balance || 0,
+        dueDate: inv.dueDate,
+        daysOverdue: Math.floor((new Date() - new Date(inv.dueDate)) / (1000 * 60 * 60 * 24))
+      }));
+
+    // === SALES TREND GRAPH DATA (Last 7 days or selected range) ===
+    const salesTrend = {};
+    invoices.forEach(inv => {
+      try {
+        const date = inv.invoiceDate ? new Date(inv.invoiceDate).toISOString().split('T')[0] : null;
+        if (!date) return;
+        
+        if (!salesTrend[date]) {
+          salesTrend[date] = {
+            date,
+            revenue: 0,
+            invoices: 0,
+            totalAmount: 0
+          };
+        }
+        salesTrend[date].revenue += (inv.paidAmount || 0);
+        salesTrend[date].totalAmount += (inv.total || 0);
+        salesTrend[date].invoices += 1;
+      } catch (err) {
+        console.error('Error processing sales trend for invoice:', inv._id, err);
+      }
+    });
+
+    const salesTrendData = Object.values(salesTrend).sort((a, b) => 
+      new Date(a.date) - new Date(b.date)
+    );
+
+    // === CUSTOMER INSIGHTS ===
+    const customerInsights = customers.map(c => {
+      const customerInvoices = invoices.filter(inv => 
+        inv.customerId && inv.customerId.toString() === c._id.toString()
+      );
+      
+      const totalPurchases = customerInvoices.reduce((sum, inv) => sum + (inv.total || 0), 0);
+      const totalPaid = customerInvoices.reduce((sum, inv) => sum + (inv.paidAmount || 0), 0);
+      const outstandingBalance = customerInvoices.reduce((sum, inv) => sum + (inv.balance || 0), 0);
+
+      return {
+        customerId: c._id,
+        name: c.name || 'Unknown',
+        totalPurchases,
+        totalPaid,
+        outstandingBalance,
+        invoiceCount: customerInvoices.length,
+        lastTransactionDate: customerInvoices.length > 0 
+          ? customerInvoices[0].invoiceDate 
+          : c.createdAt
+      };
+    }).sort((a, b) => b.totalPurchases - a.totalPurchases).slice(0, 10);
+
+    // === PRODUCT PERFORMANCE ===
+    const productSales = {};
+    invoices.forEach(inv => {
+      if (inv.items && Array.isArray(inv.items)) {
+        inv.items.forEach(item => {
+          const productId = item.productId?.toString() || 'unknown';
+          if (!productSales[productId]) {
+            productSales[productId] = {
+              productId,
+              name: item.name || 'Unknown Product',
+              quantitySold: 0,
+              revenue: 0,
+              count: 0
+            };
+          }
+          productSales[productId].quantitySold += (item.quantity || 0);
+          productSales[productId].revenue += (item.subtotal || 0);
+          productSales[productId].count += 1;
+        });
+      }
+    });
+
+    const topSellingProducts = Object.values(productSales)
+      .sort((a, b) => b.revenue - a.revenue)
+      .slice(0, 10);
+
+    // === INVOICE STATUS BREAKDOWN ===
+    const statusBreakdown = {
+      paid: paidInvoices.length,
+      pending: pendingInvoices.length,
+      overdue: overdueInvoices.length,
+      draft: invoices.filter(inv => inv.status === 'draft').length
+    };
 
     res.json({
       success: true,
       stats: {
+        // Core Metrics
         totalInvoices,
         totalCustomers,
         totalProducts,
-        totalRevenue,
-        totalPending,
-        totalSales,
+        totalRevenue,      // Only PAID invoices
+        totalSales,        // ALL invoices (paid + pending)
+        totalPending,      // Outstanding receivables
         paidInvoices: paidInvoices.length,
         pendingInvoices: pendingInvoices.length,
+        
+        // Additional Insights
+        statusBreakdown,
+        
+        // Sales Trend for Graph
+        salesTrend: salesTrendData,
+        
+        // Notifications & Alerts
+        lowStockAlerts: lowStockProducts,
+        paymentReminders: paymentReminders,
+        
+        // Top Performers
+        topCustomers: customerInsights,
+        topProducts: topSellingProducts,
+        
+        // Summary
+        summary: {
+          avgInvoiceValue: invoices.length > 0 ? totalSales / invoices.length : 0,
+          avgPaymentTime: calculateAvgPaymentTime(invoices),
+          collectionRate: totalSales > 0 ? (totalRevenue / totalSales * 100).toFixed(2) : 0
+        }
       },
     });
   } catch (err) {
+    console.error('Stats error:', err);
     res.status(500).json({ message: "Failed to fetch stats: " + err.message });
   }
 });
+
+// Helper function to calculate average payment time
+function calculateAvgPaymentTime(invoices) {
+  const paidInvoices = invoices.filter(inv => inv.status === 'paid' && inv.paidAmount > 0);
+  if (paidInvoices.length === 0) return 0;
+  
+  const totalDays = paidInvoices.reduce((sum, inv) => {
+    const invoiceDate = new Date(inv.invoiceDate);
+    const paymentDate = inv.paymentHistory && inv.paymentHistory.length > 0
+      ? new Date(inv.paymentHistory[inv.paymentHistory.length - 1].paymentDate)
+      : new Date();
+    const days = Math.floor((paymentDate - invoiceDate) / (1000 * 60 * 60 * 24));
+    return sum + days;
+  }, 0);
+  
+  return Math.round(totalDays / paidInvoices.length);
+}
 
 module.exports = router;
 

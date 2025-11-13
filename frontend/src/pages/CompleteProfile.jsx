@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 import Loader from "../components/Loader";
 import "../styles/auth.css";
 
@@ -19,6 +20,7 @@ const BUSINESS_TYPES = [
 
 export default function CompleteProfile() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -82,10 +84,9 @@ export default function CompleteProfile() {
       );
 
       if (res.data.success) {
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("user", JSON.stringify(res.data.user));
+        // Use AuthContext login function
+        login(res.data.token, res.data.user);
         localStorage.removeItem("tempToken");
-        navigate("/dashboard");
       }
     } catch (err) {
       console.error("Profile Completion Error:", err);

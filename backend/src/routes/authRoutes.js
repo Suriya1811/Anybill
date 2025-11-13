@@ -74,11 +74,12 @@ router.post("/send-otp", async (req, res) => {
     const otpHash = await bcrypt.hash(otp, 10);
     const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
 
-    // Basic rate limiting and resend cooldown
+    // Basic rate limiting and resend cooldown (allow resend after 55 seconds)
     const now = Date.now();
     const sendRec = otpSendTracker.get(normalizedPhone) || { count: 0, windowStart: now, lastSent: 0 };
-    if (now - sendRec.lastSent < 60 * 1000) {
-      return res.status(429).json({ message: "Please wait before requesting another OTP" });
+    if (now - sendRec.lastSent < 55 * 1000) {
+      const waitTime = Math.ceil((55 * 1000 - (now - sendRec.lastSent)) / 1000);
+      return res.status(429).json({ message: `Please wait ${waitTime} seconds before requesting another OTP` });
     }
     if (now - sendRec.windowStart > 15 * 60 * 1000) {
       sendRec.windowStart = now;
@@ -111,13 +112,23 @@ router.post("/send-otp", async (req, res) => {
       console.log("=".repeat(70) + "\n");
     }
 
-    // Try to send OTP via Twilio if configured
+    // ALWAYS log OTP for development/testing
+    console.log("\n" + "=".repeat(70));
+    console.log("🔐 OTP GENERATED FOR TESTING");
+    console.log(`📱 Phone: ${normalizedPhone}`);
+    console.log(`🔑 OTP: ${otp}`);
+    console.log("=".repeat(70) + "\n");
+
+    // Try to send OTP via 2Factor if configured
     if (TWO_FACTOR_API_KEY) {
       try {
+        console.log(`📤 Attempting to send OTP via 2Factor to ${normalizedPhone}...`);
         const twoFactorPhone = normalizedPhone.replace(/^\+/, "");
         const url = `https://2factor.in/API/V1/${TWO_FACTOR_API_KEY}/SMS/${encodeURIComponent(twoFactorPhone)}/AUTOGEN`;
         const { data } = await axios.get(url, { timeout: 10000 });
+        console.log(`📥 2Factor Response:`, data);
         if (data && (data.Status === 'Success' || data.status === 'success') && data.Details) {
+          console.log(`✅ OTP sent successfully via 2Factor`);
           const twoFactorExpiresAt = new Date(Date.now() + 10 * 60 * 1000);
           await OTP.findOneAndUpdate(
             { phone: normalizedPhone },
@@ -129,6 +140,7 @@ router.post("/send-otp", async (req, res) => {
             { upsert: true }
           );
         } else {
+          console.log(`⚠️ 2Factor API returned non-success, falling back to local OTP`);
           await OTP.findOneAndUpdate(
             { phone: normalizedPhone },
             { otpHash, expiresAt, verificationSid: "" },
@@ -136,6 +148,8 @@ router.post("/send-otp", async (req, res) => {
           );
         }
       } catch (twoFactorError) {
+        console.error(`❌ 2Factor API Error:`, twoFactorError.message);
+        console.log(`💾 Falling back to local OTP storage`);
         await OTP.findOneAndUpdate(
           { phone: normalizedPhone },
           { otpHash, expiresAt, verificationSid: "" },
@@ -143,6 +157,7 @@ router.post("/send-otp", async (req, res) => {
         );
       }
     } else {
+      console.log(`💾 No 2Factor API configured, storing OTP locally`);
       // Development mode: store OTP (already logged above)
       await OTP.findOneAndUpdate(
         { phone: normalizedPhone },
@@ -151,9 +166,10 @@ router.post("/send-otp", async (req, res) => {
       );
     }
 
+    console.log(`✅ OTP request processed successfully for ${normalizedPhone}`);
     res.json({ success: true, message: "OTP sent successfully" });
   } catch (err) {
-    console.error("OTP Error:", err);
+    console.error("❌ OTP Error:", err);
     res.status(500).json({ message: "Failed to send OTP: " + err.message });
   }
 });

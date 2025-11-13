@@ -1,60 +1,123 @@
+/* -------------------------------------------------- */
+/*                  CONTACT FORM UI                   */
+/*              Premium + Mobile Compact              */
+/* -------------------------------------------------- */
+
 .contact-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 32px;
+  gap: 18px; /* smaller */
+  padding: 28px; /* reduced */
+  background: var(--bg-primary);
+  border-radius: 14px;
+  border: 1px solid var(--border-color);
 }
+
+@media (max-width: 768px) {
+  .contact-form {
+    padding: 22px;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 576px) {
+  .contact-form {
+    padding: 18px;
+    gap: 14px; /* tighter spacing */
+  }
+}
+
+/* -------------------------------------------------- */
+/*                  FORM ROW (Desktop)                */
+/* -------------------------------------------------- */
 
 .contact-form .row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 14px;
 }
+
+@media (max-width: 768px) {
+  .contact-form .row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+/* -------------------------------------------------- */
+/*               INPUT + TEXTAREA STYLES              */
+/* -------------------------------------------------- */
 
 .contact-form .input,
 .contact-form .textarea {
   width: 100%;
-  padding: 14px 18px;
-  border-radius: var(--radius-sm);
+  padding: 12px 16px; /* smaller */
+  font-size: 0.95rem;
+  border-radius: 8px;
   border: 1px solid var(--input-border);
   background: var(--input-bg);
   color: var(--input-text);
-  font-size: 1rem;
-  font-family: inherit;
-  transition: all 0.3s ease;
+  transition: 0.2s ease;
+  box-sizing: border-box;
+}
+
+@media (max-width: 576px) {
+  .contact-form .input,
+  .contact-form .textarea {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+  }
 }
 
 .contact-form .input::placeholder,
 .contact-form .textarea::placeholder {
   color: var(--input-placeholder);
-  opacity: 1;
 }
 
+/* Focus effect */
 .contact-form .input:focus,
 .contact-form .textarea:focus {
-  outline: none;
   border-color: var(--primary-color);
-  background: var(--input-bg);
   box-shadow: 0 0 0 3px var(--hover-bg);
+  outline: none;
 }
 
+/* TEXTAREA size reduced for mobile */
 .contact-form .textarea {
   resize: vertical;
-  min-height: 140px;
-  font-family: inherit;
+  min-height: 110px;
 }
+
+@media (max-width: 576px) {
+  .contact-form .textarea {
+    min-height: 95px;
+  }
+}
+
+/* -------------------------------------------------- */
+/*                   SUBMIT BUTTON                    */
+/* -------------------------------------------------- */
 
 .contact-form button {
   align-self: flex-end;
-  margin-top: 8px;
+  margin-top: 4px; /* reduced */
+  padding: 12px 24px;
+  border-radius: 10px;
 }
 
-@media (max-width: 768px) {
-  .contact-form {
-    padding: 24px;
+@media (max-width: 640px) {
+  .contact-form button {
+    align-self: stretch;   /* full width button */
+    font-size: 0.9rem !important;
+    padding: 9px 16px !important;
+    border-radius: 8px !important;
   }
-  
-  .contact-form .row {
-    grid-template-columns: 1fr;
+}
+
+@media (max-width: 420px) {
+  .contact-form button {
+    font-size: 0.85rem !important;
+    padding: 8px 14px !important;
+    border-radius: 8px !important;
   }
 }

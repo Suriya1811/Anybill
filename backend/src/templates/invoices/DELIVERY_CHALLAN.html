@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Delivery Challan - {{invoiceNumber}}</title>
+  <style>
+    body { font-family: Arial, sans-serif; font-size: 12px; margin: 0; padding: 0; }
+    .container { width: 210mm; min-height: 297mm; margin: 0 auto; padding: 20mm; }
+    .header { display: flex; justify-content: space-between; border-bottom: 3px solid #3498db; padding-bottom: 15px; }
+    .company-name { font-size: 24px; font-weight: bold; color: #3498db; }
+    .challan-title { font-size: 32px; color: #3498db; font-weight: bold; }
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+    .info-box { padding: 15px; border: 2px solid #3498db; border-radius: 5px; }
+    .info-box h4 { color: #3498db; margin-bottom: 10px; }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    thead { background: #3498db; color: white; }
+    thead th { padding: 12px; text-align: left; }
+    tbody td { padding: 10px; border-bottom: 1px solid #ddd; }
+    .transport-details { background: #ecf0f1; padding: 15px; margin: 20px 0; border-left: 4px solid #3498db; }
+    .footer { margin-top: 60px; display: flex; justify-content: space-between; }
+    .signature-box { width: 200px; text-align: center; }
+    .signature-line { border-top: 2px solid #000; padding-top: 5px; margin-top: 40px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div>
+        <div class="company-name">{{businessName}}</div>
+        <p style="margin-top: 5px;">{{businessAddress}}</p>
+        <p>Phone: {{businessPhone}} | Email: {{businessEmail}}</p>
+        <p>GSTIN: {{businessGSTIN}}</p>
+      </div>
+      <div style="text-align: right;">
+        <div class="challan-title">DELIVERY CHALLAN</div>
+        <p style="margin-top: 10px;"><strong>Challan No:</strong> {{invoiceNumber}}</p>
+        <p><strong>Date:</strong> {{invoiceDate}}</p>
+      </div>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-box">
+        <h4>CONSIGNEE (SHIP TO):</h4>
+        <p><strong>{{customerName}}</strong></p>
+        <p>{{customerAddress}}</p>
+        <p>Phone: {{customerPhone}}</p>
+        <p>GSTIN: {{customerGSTIN}}</p>
+      </div>
+      <div class="info-box">
+        <h4>BUYER (BILL TO):</h4>
+        <p><strong>{{customerName}}</strong></p>
+        <p>{{customerAddress}}</p>
+        <p>Phone: {{customerPhone}}</p>
+        <p>GSTIN: {{customerGSTIN}}</p>
+      </div>
+    </div>
+
+    <div class="transport-details">
+      <h4 style="color: #3498db; margin-bottom: 10px;">TRANSPORT DETAILS:</h4>
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+        <div><strong>Vehicle Number:</strong> {{vehicleNumber}}</div>
+        <div><strong>Transporter:</strong> {{transporterName}}</div>
+        <div><strong>LR Number:</strong> N/A</div>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 40px;">S.No</th>
+          <th>Description of Goods</th>
+          <th>HSN/SAC</th>
+          <th style="width: 100px;">Quantity</th>
+          <th style="width: 100px;">Unit</th>
+          <th style="text-align: right; width: 120px;">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{itemsTable}}
+      </tbody>
+    </table>
+
+    <div style="margin-top: 30px; padding: 15px; background: #fff3cd; border-left: 4px solid #ffc107;">
+      <p><strong>NOTE:</strong> This delivery challan is issued for transportation purposes only. 
+      Tax invoice will follow separately.</p>
+    </div>
+
+    <div class="footer">
+      <div class="signature-box">
+        <div class="signature-line">Receiver's Signature</div>
+        <p style="font-size: 10px; margin-top: 5px;">Date: _______________</p>
+      </div>
+      <div class="signature-box">
+        <div class="signature-line">For {{businessName}}</div>
+        <p style="font-size: 10px; margin-top: 5px;">Authorized Signatory</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
