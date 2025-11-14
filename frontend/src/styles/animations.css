@@ -1,0 +1,88 @@
+/* --------------------------------------------------- */
+/*                    FLOATY ANIMATION                 */
+/* --------------------------------------------------- */
+
+@keyframes floaty {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px); /* slightly softer */
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* GPU Hint */
+.floaty {
+  will-change: transform;
+  transform-origin: center;
+}
+
+/* --------------------------------------------------- */
+/*                    BLOB MOTION                      */
+/* --------------------------------------------------- */
+
+@keyframes blob {
+  0% {
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-6px) scale(1.05) rotate(4deg);
+  }
+  100% {
+    transform: translateY(0) scale(1) rotate(0deg);
+  }
+}
+
+/* GPU Hint */
+.blob {
+  will-change: transform;
+  transform-origin: center;
+}
+
+/* --------------------------------------------------- */
+/*                   SECTION FADE-IN                   */
+/* --------------------------------------------------- */
+
+.fade-in {
+  animation: fadeIn 0.7s cubic-bezier(.2, .9, .3, 1) both;
+  will-change: opacity, transform;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --------------------------------------------------- */
+/*             REDUCED MOTION SUPPORT                  */
+/* --------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-in,
+  .blob,
+  .floaty {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* --------------------------------------------------- */
+/*        MOBILE: PREVENT LAYOUT SHIFT FROM ANIM       */
+/* --------------------------------------------------- */
+
+@media (max-width: 640px) {
+  .floaty,
+  .blob,
+  .fade-in {
+    animation-duration: 0.6s !important;
+  }
+}

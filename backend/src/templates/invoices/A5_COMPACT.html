@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice - {{invoiceNumber}}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Arial', sans-serif; font-size: 10px; line-height: 1.4; color: #333; }
+    .container { width: 148mm; min-height: 210mm; margin: 0 auto; padding: 10mm; background: white; }
+    .header { text-align: center; margin-bottom: 15px; border-bottom: 2px solid #333; padding-bottom: 10px; }
+    .company-name { font-size: 18px; font-weight: bold; margin-bottom: 3px; }
+    .company-info { font-size: 8px; line-height: 1.6; }
+    .invoice-title { font-size: 20px; font-weight: bold; margin: 10px 0; }
+    .meta { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 9px; }
+    .billing-box { padding: 8px; border: 1px solid #ddd; margin-bottom: 10px; font-size: 9px; }
+    .billing-box h4 { font-size: 10px; margin-bottom: 5px; }
+    table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 9px; }
+    thead { background: #333; color: white; }
+    thead th { padding: 6px 4px; text-align: left; font-size: 9px; }
+    tbody td { padding: 5px 4px; border-bottom: 1px solid #eee; }
+    .text-right { text-align: right; }
+    .totals { margin-top: 15px; }
+    .totals table { width: 100%; }
+    .totals td { padding: 5px; font-size: 9px; }
+    .totals .grand-total { background: #333; color: white; font-weight: bold; }
+    .footer { margin-top: 20px; text-align: center; font-size: 8px; color: #777; border-top: 1px solid #ddd; padding-top: 10px; }
+    @media print { .container { margin: 0; padding: 8mm; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="company-name">{{businessName}}</div>
+      <div class="company-info">
+        <p>{{businessAddress}}</p>
+        <p>Phone: {{businessPhone}} | Email: {{businessEmail}}</p>
+        <p>GSTIN: {{businessGSTIN}}</p>
+      </div>
+      <div class="invoice-title">INVOICE</div>
+    </div>
+
+    <div class="meta">
+      <div>
+        <strong>Invoice #:</strong> {{invoiceNumber}}<br>
+        <strong>Date:</strong> {{invoiceDate}}<br>
+        <strong>Due:</strong> {{dueDate}}
+      </div>
+      <div style="text-align: right;">
+        <strong>Status:</strong> {{paymentStatus}}
+      </div>
+    </div>
+
+    <div class="billing-box">
+      <h4>BILL TO:</h4>
+      <p><strong>{{customerName}}</strong></p>
+      <p>{{customerPhone}} | {{customerEmail}}</p>
+      <p>GSTIN: {{customerGSTIN}}</p>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Item</th>
+          <th>Qty</th>
+          <th class="text-right">Rate</th>
+          <th class="text-right">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{itemsTable}}
+      </tbody>
+    </table>
+
+    <div class="totals">
+      <table>
+        <tr><td>Subtotal:</td><td class="text-right">{{subtotal}}</td></tr>
+        <tr><td>Tax:</td><td class="text-right">{{totalTax}}</td></tr>
+        <tr class="grand-total"><td>TOTAL:</td><td class="text-right">{{total}}</td></tr>
+        <tr><td>Paid:</td><td class="text-right" style="color: green;">{{paidAmount}}</td></tr>
+        <tr><td>Balance:</td><td class="text-right" style="color: red;">{{balance}}</td></tr>
+      </table>
+    </div>
+
+    <div class="footer">
+      <p>Thank you for your business!</p>
+    </div>
+  </div>
+</body>
+</html>

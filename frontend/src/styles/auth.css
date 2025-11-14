@@ -1,0 +1,236 @@
+/* ------------------------------------------------------- */
+/*                    AUTH PAGE - CLEAN UI                 */
+/*          Mobile-Compact / Apple-CRED Optimized          */
+/* ------------------------------------------------------- */
+
+/* PAGE WRAPPER */
+.auth-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 140px); /* reduced */
+  padding: 40px var(--desktop-padding);
+  width: 100%;
+  background: var(--bg-primary);
+}
+
+@media (max-width: 768px) {
+  .auth-page {
+    padding: 28px var(--tablet-padding);
+    min-height: calc(100vh - 120px);
+  }
+}
+
+@media (max-width: 576px) {
+  .auth-page {
+    padding: 18px var(--mobile-padding);
+    min-height: calc(100vh - 90px); /* compact */
+  }
+}
+
+/* DASHBOARD WRAPPER */
+.dashboard-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 150px);
+  padding: 32px 18px;
+  width: 100%;
+  background: var(--bg-primary);
+}
+
+/* ------------------------------------------------------- */
+/*                           CARD                           */
+/* ------------------------------------------------------- */
+
+.auth-card {
+  width: 100%;
+  max-width: 380px; /* slightly smaller */
+  background: var(--bg-secondary);
+  padding: 34px 26px; /* reduced */
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+}
+
+@media (max-width: 576px) {
+  .auth-card {
+    padding: 24px 18px;
+    border-radius: 14px;
+  }
+}
+
+/* TITLE */
+.auth-card h2 {
+  font-size: 1.55rem; /* reduced */
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+@media (max-width: 576px) {
+  .auth-card h2 {
+    font-size: 1.35rem;
+    margin-bottom: 6px;
+  }
+}
+
+/* SUBTEXT */
+.auth-card p {
+  font-size: 13.5px;
+  margin-bottom: 6px;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 576px) {
+  .auth-card p {
+    font-size: 12.8px;
+  }
+}
+
+/* LINKS */
+.auth-link-text {
+  color: var(--text-secondary);
+}
+
+.auth-link-text a {
+  color: var(--primary-color);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-link-text a:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+/* ------------------------------------------------------- */
+/*                        INPUTS                           */
+/* ------------------------------------------------------- */
+
+.auth-card input,
+.auth-input {
+  width: 100%;
+  padding: 11px 14px;
+  margin-top: 14px;
+  font-size: 14px;
+  border-radius: 8px;    /* smaller */
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  transition: 0.3s;
+}
+
+@media (max-width: 576px) {
+  .auth-card input,
+  .auth-input {
+    padding: 10px 12px;
+    font-size: 13px;
+    margin-top: 12px;
+    border-radius: 7px;
+  }
+}
+
+.auth-card input:focus,
+.auth-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--hover-bg);
+}
+
+/* SELECT FIX */
+select.auth-input option {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* ------------------------------------------------------- */
+/*                        BUTTONS                          */
+/* ------------------------------------------------------- */
+
+.auth-card button {
+  width: 100%;
+  margin-top: 16px;
+  padding: 11px 0;
+  font-size: 14.5px;
+  font-weight: 600;
+  border-radius: 8px;
+  background: var(--primary-color);
+  color: var(--text-inverse);
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  transition: 0.3s;
+}
+
+@media (max-width: 576px) {
+  .auth-card button {
+    padding: 9px 0;
+    font-size: 13.5px;
+    margin-top: 12px;
+    border-radius: 7px;
+  }
+}
+
+/* ERROR + SUCCESS MESSAGE */
+.error-message,
+.success-message {
+  font-size: 13.5px;
+  margin-top: 8px;
+  padding: 8px 10px;
+  border-radius: 6px;
+}
+
+@media (max-width: 576px) {
+  .error-message,
+  .success-message {
+    font-size: 12.5px;
+    padding: 6px 8px;
+  }
+}
+
+/* ------------------------------------------------------- */
+/*                    SECONDARY BUTTON                     */
+/* ------------------------------------------------------- */
+
+.btn-secondary {
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 8px;
+}
+
+@media (max-width: 576px) {
+  .btn-secondary {
+    padding: 9px 16px;
+    font-size: 13px;
+  }
+}
+
+.logout-btn {
+  padding: 10px 20px;
+  font-size: 14px;
+  background: var(--error-color);
+}
+
+@media (max-width: 576px) {
+  .logout-btn {
+    padding: 9px 16px;
+    font-size: 13px;
+  }
+}
+
+/* ------------------------------------------------------- */
+/*                         LOADER                          */
+/* ------------------------------------------------------- */
+
+.loader {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--border-color);
+  border-top-color: var(--primary-color);
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

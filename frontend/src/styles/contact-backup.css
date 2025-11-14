@@ -1,0 +1,156 @@
+/* -------------------------------------------------- */
+/*                  CONTACT PAGE UI                   */
+/* -------------------------------------------------- */
+
+.page-contact {
+  padding: 80px 0; /* reduced */
+  width: 100%;
+  min-height: calc(100vh - 150px); /* less height */
+}
+
+.page-contact .h1 {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.page-contact .lead {
+  text-align: center;
+  margin: 0 auto 50px;
+  max-width: 600px;
+  padding: 0 14px;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+/* -------------------------------------------------- */
+/*                   GRID LAYOUT                      */
+/* -------------------------------------------------- */
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px; /* reduced from 400px */
+  gap: 28px; /* reduced */
+  max-width: var(--max-width);
+  margin: 40px auto 0;
+  padding: 0 20px; /* reduced */
+}
+
+/* -------------------------------------------------- */
+/*                   INFO SIDEBAR                      */
+/* -------------------------------------------------- */
+
+.contact-info {
+  padding: 28px; /* smaller */
+  position: sticky;
+  top: 80px;
+  height: fit-content;
+  border-radius: 14px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+}
+
+.contact-info h3 {
+  font-size: 1.35rem;
+  margin-bottom: 18px;
+}
+
+.contact-info p {
+  font-size: 0.98rem;
+  line-height: 1.65;
+  margin-bottom: 12px;
+}
+
+.contact-info p:last-child {
+  margin-bottom: 0;
+}
+
+/* -------------------------------------------------- */
+/*                 LARGE DESKTOP REFINEMENT            */
+/* -------------------------------------------------- */
+
+@media (min-width: 1400px) {
+  .contact-grid {
+    padding: 0 32px;
+  }
+}
+
+/* -------------------------------------------------- */
+/*                   TABLET VIEW (≤1024px)            */
+/* -------------------------------------------------- */
+
+@media (max-width: 1024px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    padding: 0 18px;
+  }
+
+  .contact-info {
+    position: static;
+    padding: 24px;
+  }
+}
+
+/* -------------------------------------------------- */
+/*                   MOBILE VIEW (≤768px)            */
+/* -------------------------------------------------- */
+
+@media (max-width: 768px) {
+  .page-contact {
+    padding: 50px 0; /* MUCH smaller */
+  }
+
+  .contact-grid {
+    padding: 0 14px;
+    gap: 18px;
+  }
+
+  .contact-info {
+    padding: 20px;
+    border-radius: 12px;
+  }
+
+  .contact-info h3 {
+    font-size: 1.25rem;
+  }
+
+  .contact-info p {
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+}
+
+/* -------------------------------------------------- */
+/*                 EXTRA SMALL (≤480px)                */
+/* -------------------------------------------------- */
+
+@media (max-width: 480px) {
+  .page-contact {
+    padding: 40px 0;
+  }
+
+  .contact-info {
+    padding: 16px;
+  }
+
+  .contact-grid {
+    gap: 14px;
+  }
+}
+
+/* -------------------------------------------------- */
+/*        BUTTON OPTIMIZATION (Your Main Request)     */
+/* -------------------------------------------------- */
+
+@media (max-width: 640px) {
+  .page-contact button,
+  .contact-grid button,
+  .contact-info button,
+  .contact-form button,
+  .btn,
+  .contact-btn {
+    font-size: 0.9rem !important;
+    padding: 10px 14px !important; /* smaller */
+    border-radius: 8px !important;
+  }
+}

@@ -1,0 +1,135 @@
+/* -------------------------------------------------- */
+/*                     CTA SECTION                    */
+/*         Premium Apple/CRED — Mobile Compact        */
+/* -------------------------------------------------- */
+
+.cta {
+  margin: 60px 0;            /* reduced */
+  width: 100%;
+  padding: 0 20px;           /* reduced */
+}
+
+@media (min-width: 1400px) {
+  .cta {
+    padding: 0 40px;
+  }
+}
+
+.cta-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;                 /* reduced */
+  padding: 32px;             /* smaller */
+  max-width: var(--max-width);
+  margin: 0 auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
+  backdrop-filter: blur(18px);
+}
+
+:root[data-theme="dark"] .cta-inner {
+  background: rgba(123, 168, 90, 0.06);
+  border-color: rgba(123, 168, 90, 0.18);
+}
+
+:root[data-theme="light"] .cta-inner {
+  background: linear-gradient(
+    135deg,
+    rgba(123, 168, 90, 0.08),
+    rgba(147, 197, 114, 0.06)
+  );
+}
+
+/* Text area */
+.cta-inner .h2 {
+  margin-bottom: 6px;
+  font-size: 1.8rem; /* slightly smaller */
+}
+
+.cta-inner .lead {
+  margin: 0;
+  max-width: 480px;
+  font-size: 1rem;  /* reduced */
+  line-height: 1.55;
+}
+
+/* Actions */
+.cta-actions {
+  display: flex;
+  gap: 14px;   /* smaller */
+  flex-shrink: 0;
+}
+
+/* Tablet */
+@media (max-width: 968px) {
+  .cta-inner {
+    flex-direction: column;
+    text-align: center;
+    padding: 26px;           /* smaller */
+  }
+
+  .cta-inner .lead {
+    max-width: 100%;
+  }
+
+  .cta-actions {
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .cta {
+    margin: 50px 0;
+    padding: 0 16px;
+  }
+
+  .cta-inner {
+    padding: 20px;          /* significantly smaller */
+    gap: 16px;
+    border-radius: 14px;
+  }
+
+  .cta-inner .h2 {
+    font-size: 1.55rem;     /* mobile heading size */
+  }
+
+  .cta-inner .lead {
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
+
+  .cta-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .cta-actions .btn {
+    width: 100%;
+    padding: 10px 14px !important;  /* compact buttons */
+    font-size: 0.9rem !important;
+    border-radius: 8px !important;
+  }
+}
+
+/* Extra Small Devices */
+@media (max-width: 420px) {
+  .cta-inner {
+    padding: 18px;
+  }
+
+  .cta-inner .h2 {
+    font-size: 1.45rem;
+  }
+
+  .cta-inner .lead {
+    font-size: 0.9rem;
+  }
+
+  .cta-actions .btn {
+    padding: 9px 12px !important;
+    font-size: 0.85rem !important;
+  }
+}

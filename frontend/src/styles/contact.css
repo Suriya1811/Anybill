@@ -1,0 +1,253 @@
+/* -------------------------------------------------- */
+/*            CONTACT PAGE – APPLE / CRED UI          */
+/*      FULLY MOBILE-COMPACT / RESPONSIVE VERSION     */
+/* -------------------------------------------------- */
+
+.contact-page {
+  width: 100%;
+}
+
+/* ------------------------- HERO ------------------------- */
+
+.contact-hero {
+  padding: 100px 0 70px; /* reduced */
+  background: var(--bg-primary);
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .contact-hero {
+    padding: 70px 0 50px; /* compact */
+  }
+}
+
+/* ------------------------ CONTENT ------------------------ */
+
+.contact-content {
+  padding: 50px 0 80px; /* reduced */
+  background: var(--bg-secondary);
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 0.9fr; /* slightly reduced RHS */
+  gap: 40px; /* reduced */
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 20px; /* compact */
+}
+
+@media (max-width: 968px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 0 16px;
+  }
+}
+
+/* Section Title */
+.contact-form-section h2,
+.contact-info-section h2 {
+  font-size: 1.55rem;
+  font-weight: 600;
+  margin-bottom: 26px; /* reduced */
+}
+
+@media (max-width: 640px) {
+  .contact-form-section h2,
+  .contact-info-section h2 {
+    font-size: 1.35rem;
+    margin-bottom: 20px;
+  }
+}
+
+/* ------------------- INFO CARDS ------------------- */
+
+.contact-info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 18px; /* reduced */
+}
+
+.info-card {
+  background: var(--bg-primary);
+  padding: 18px; /* SMALLER */
+  border-radius: 14px;
+  border: 1px solid var(--border-color);
+  display: flex;
+  gap: 14px;
+}
+
+@media (max-width: 640px) {
+  .info-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 16px;
+  }
+}
+
+.info-icon {
+  font-size: 1.7rem; /* smaller */
+}
+
+.info-content h4 {
+  font-size: 1.05rem; /* smaller */
+  margin-bottom: 6px;
+}
+
+.info-content p {
+  font-size: 0.95rem;
+  line-height: 1.55;
+  margin: 3px 0;
+}
+
+.info-note {
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
+
+/* WhatsApp Button */
+.whatsapp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px; /* reduced */
+  background: var(--primary-color);
+  color: #fff;
+  border-radius: 14px; /* smaller */
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  margin-top: 6px;
+  transition: 0.3s ease;
+}
+
+.whatsapp-btn:hover {
+  opacity: 0.9;
+}
+
+/* ------------------------- SOCIAL ------------------------- */
+
+.social-links {
+  background: var(--bg-primary);
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid var(--border-color);
+}
+
+.social-links h4 {
+  font-size: 1.05rem;
+  margin-bottom: 14px;
+}
+
+.social-icons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.social-icon {
+  padding: 6px 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+
+.social-icon:hover {
+  color: var(--primary-color);
+}
+
+/* ------------------------ MAP ------------------------ */
+
+.map-section {
+  padding: 80px 0; /* reduced */
+  background: var(--bg-primary);
+}
+
+@media (max-width: 640px) {
+  .map-section {
+    padding: 50px 0;
+  }
+}
+
+.map-container {
+  margin-top: 40px; /* reduced */
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+/* -------------------- SUPPORT HOURS -------------------- */
+
+.support-hours {
+  padding: 80px 0; /* reduced */
+  background: var(--bg-secondary);
+}
+
+.hours-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+}
+
+@media (max-width: 968px) {
+  .hours-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.hours-card {
+  background: var(--bg-primary);
+  padding: 28px; /* reduced */
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  text-align: center;
+}
+
+.hours-icon {
+  font-size: 2.3rem; /* smaller */
+  margin-bottom: 16px;
+}
+
+.hours-card h4 {
+  font-size: 1.15rem;
+  margin-bottom: 12px;
+}
+
+.hours-card p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.hours-card a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+/* EXTRA SMALL PHONES */
+@media (max-width: 420px) {
+  .hours-card {
+    padding: 24px 18px;
+  }
+}
+
+/* -------------------------------------------------- */
+/*             MOBILE BUTTON OPTIMIZATION             */
+/* -------------------------------------------------- */
+
+@media (max-width: 640px) {
+  .contact-page button,
+  .contact-page .btn,
+  .contact-content button,
+  .contact-grid button,
+  .whatsapp-btn {
+    font-size: 0.85rem !important;
+    padding: 8px 14px !important;
+    border-radius: 8px !important;
+  }
+
+  .social-icon {
+    font-size: 0.85rem;
+    padding: 4px 0;
+  }
+}

@@ -1,0 +1,215 @@
+/* Pricing Page - Professional Apple/CRED Style */
+
+.pricing-page {
+  width: 100%;
+}
+
+/* Hero Section */
+.pricing-hero {
+  padding: 120px 0 80px;
+  background: var(--bg-primary);
+  text-align: center;
+}
+
+/* Pricing Plans */
+.pricing-plans {
+  padding: 60px 0 100px;
+  background: var(--bg-secondary);
+}
+
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  margin-top: 60px;
+}
+
+.plan-card {
+  background: var(--bg-primary);
+  border: 2px solid var(--border-color);
+  border-radius: 24px;
+  padding: 40px 32px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.plan-card.featured {
+  border-color: var(--primary-color);
+  background: linear-gradient(180deg, rgba(123, 168, 90, 0.05), transparent);
+  transform: scale(1.05);
+}
+
+.popular-badge {
+  position: absolute;
+  top: -12px;
+  right: 32px;
+  background: var(--primary-color);
+  color: white;
+  padding: 6px 20px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.plan-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.plan-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  color: var(--text-primary);
+}
+
+.plan-price {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  margin: 16px 0;
+}
+
+.currency {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-right: 4px;
+}
+
+.amount {
+  font-size: 4rem;
+  font-weight: 800;
+  color: var(--primary-color);
+  line-height: 1;
+}
+
+.period {
+  font-size: 1rem;
+  color: var(--text-tertiary);
+  margin-left: 4px;
+}
+
+.plan-description {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.plan-features {
+  flex-grow: 1;
+  margin-bottom: 32px;
+}
+
+.plan-features ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.plan-features li {
+  padding: 12px 0;
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.plan-features li.disabled {
+  opacity: 0.5;
+}
+
+.check {
+  color: var(--primary-color);
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
+.cross {
+  color: var(--text-tertiary);
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
+.plan-action {
+  margin-top: auto;
+}
+
+.btn-full {
+  width: 100%;
+  justify-content: center;
+  padding: 14px 24px;
+}
+
+/* FAQ Section */
+.pricing-faq {
+  padding: 100px 0;
+  background: var(--bg-primary);
+}
+
+.faq-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+  margin-top: 60px;
+}
+
+.faq-item {
+  background: var(--bg-secondary);
+  padding: 32px;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+}
+
+.faq-item h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+  color: var(--text-primary);
+}
+
+.faq-item p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* CTA */
+.pricing-cta {
+  padding: 100px 0;
+  background: var(--bg-secondary);
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+  .plans-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .plan-card.featured {
+    transform: scale(1);
+  }
+
+  .faq-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .pricing-hero {
+    padding: 80px 0 60px;
+  }
+
+  .plan-card {
+    padding: 32px 24px;
+  }
+
+  .amount {
+    font-size: 3rem;
+  }
+}

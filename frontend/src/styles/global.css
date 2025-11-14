@@ -1,0 +1,272 @@
+/* -------------------------------------------------- */
+/*                     ROOT VARIABLES                 */
+/* -------------------------------------------------- */
+
+:root {
+  --radius: 12px;
+  --radius-sm: 8px;
+  --max-width: 1400px;
+  --transition: all 0.2s ease;
+  --mobile-padding: 14px;
+  --tablet-padding: 18px;
+  --desktop-padding: 22px;
+  --large-desktop-padding: 40px;
+}
+
+/* LIGHT THEME */
+:root[data-theme="light"] {
+  --bg1: #f8f9fa;
+  --bg2: #ffffff;
+  --bg3: #f1f3f4;
+  --muted: #5f6368;
+  --muted-light: #3c4043;
+  --accent: #2e7d32;
+  --accent-2: #1b5e20;
+  --accent-3: #4caf50;
+  --accent-gradient: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 50%, var(--accent-3) 100%);
+  --white: #202124;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.08);
+  --shadow-md: 0 3px 6px rgba(0,0,0,0.12);
+  --shadow-lg: 0 8px 16px rgba(0,0,0,0.15);
+  --shadow-xl: 0 14px 28px rgba(0,0,0,0.20);
+}
+
+/* DARK THEME */
+:root[data-theme="dark"] {
+  --bg1: #121212;
+  --bg2: #1e1e1e;
+  --bg3: #2d2d2d;
+  --muted: #9aa0a6;
+  --muted-light: #bdc1c6;
+  --accent: #4caf50;
+  --accent-2: #388e3c;
+  --accent-3: #81c784;
+  --accent-gradient: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 50%, var(--accent-3) 100%);
+  --white: #e8eaed;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.25);
+  --shadow-md: 0 3px 6px rgba(0,0,0,0.30);
+  --shadow-lg: 0 8px 16px rgba(0,0,0,0.35);
+  --shadow-xl: 0 14px 28px rgba(0,0,0,0.45);
+}
+
+/* -------------------------------------------------- */
+/*                       RESET                        */
+/* -------------------------------------------------- */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg1);
+  color: var(--white);
+  overflow-x: hidden;
+  line-height: 1.55;
+}
+
+/* THEME BACKGROUNDS */
+:root[data-theme="dark"] body {
+  background:
+    radial-gradient(circle at 25% 25%, rgba(123,168,90,0.06), transparent 40%),
+    radial-gradient(circle at 75% 75%, rgba(123,168,90,0.04), transparent 40%),
+    linear-gradient(var(--bg1), var(--bg2));
+}
+
+:root[data-theme="light"] body {
+  background:
+    radial-gradient(circle at 25% 25%, rgba(123,168,90,0.05), transparent 40%),
+    radial-gradient(circle at 75% 75%, rgba(93,138,66,0.03), transparent 40%),
+    linear-gradient(var(--bg1), var(--bg2));
+}
+
+/* -------------------------------------------------- */
+/*                   CONTAINER UTILS                  */
+/* -------------------------------------------------- */
+
+.container {
+  max-width: var(--max-width);
+  padding: 0 var(--desktop-padding);
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) { .container { padding: 0 var(--tablet-padding); } }
+@media (max-width: 576px) { .container { padding: 0 var(--mobile-padding); } }
+
+/* -------------------------------------------------- */
+/*                       CARD                         */
+/* -------------------------------------------------- */
+
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--bg3);
+  padding: 20px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  transition: var(--transition);
+}
+
+@media (max-width: 576px) {
+  .card {
+    padding: 16px;
+  }
+}
+
+.card:hover {
+  box-shadow: var(--shadow-xl);
+  border-color: var(--accent);
+}
+
+/* -------------------------------------------------- */
+/*                    TYPOGRAPHY                      */
+/* -------------------------------------------------- */
+
+.h1 {
+  font-size: clamp(1.8rem, 6vw, 3rem);
+  font-weight: 800;
+}
+
+.h2 {
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  font-weight: 700;
+}
+
+.h3 {
+  font-size: clamp(1.1rem, 3vw, 1.6rem);
+  font-weight: 600;
+}
+
+.lead {
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  color: var(--muted);
+}
+
+/* -------------------------------------------------- */
+/*                     BUTTONS                        */
+/* -------------------------------------------------- */
+
+.btn {
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  border: none;
+  background: var(--bg3);
+  color: var(--white);
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Mobile shrink */
+@media (max-width: 576px) {
+  .btn {
+    padding: 8px 14px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Primary */
+.btn-primary {
+  background: var(--accent);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--accent-2);
+}
+
+/* Small */
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 0.82rem;
+}
+
+/* Large */
+.btn-lg {
+  padding: 14px 24px;
+  font-size: 1.05rem;
+}
+
+/* Danger */
+.btn-danger {
+  background: #e53935;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #c62828;
+}
+
+/* -------------------------------------------------- */
+/*                      FORM UI                       */
+/* -------------------------------------------------- */
+
+.input, .textarea, select {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--bg3);
+  border: 1px solid var(--bg3);
+  color: var(--white);
+  font-size: 0.92rem;
+}
+
+.input:focus, .textarea:focus, select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(76,175,80,0.3);
+}
+
+.textarea { min-height: 120px; }
+
+/* -------------------------------------------------- */
+/*                        ROW                         */
+/* -------------------------------------------------- */
+
+.row {
+  display: flex;
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .row { flex-direction: column; }
+  .btn { width: 100%; }
+}
+
+/* -------------------------------------------------- */
+/*                   SCROLLBARS                       */
+/* -------------------------------------------------- */
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg2); }
+::-webkit-scrollbar-thumb { background: var(--bg3); border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* -------------------------------------------------- */
+/*                    ANIMATION                       */
+/* -------------------------------------------------- */
+
+.fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

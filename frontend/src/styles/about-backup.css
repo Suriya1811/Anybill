@@ -1,0 +1,137 @@
+/* -------------------------------------------------- */
+/*                  ABOUT PAGE BASE                    */
+/* -------------------------------------------------- */
+
+.page-about {
+  padding: 80px 0;               /* reduced from 100px */
+  width: 100%;
+  min-height: calc(100vh - 150px); /* smaller height for mobile */
+}
+
+/* Headings */
+.page-about .h1 {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+/* Lead paragraph */
+.page-about .lead {
+  text-align: center;
+  margin: 0 auto 50px;
+  max-width: 700px;
+  padding: 0 14px;
+}
+
+
+/* -------------------------------------------------- */
+/*                      GRID                           */
+/* -------------------------------------------------- */
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); /* smaller min-width */
+  gap: 28px;
+  margin-top: 40px;
+  max-width: var(--max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 20px;              /* smaller padding */
+}
+
+/* Card */
+.about-grid .card {
+  padding: 32px;                /* smaller than 40px */
+  border-radius: 14px;
+}
+
+/* Card Title */
+.about-grid .card h3 {
+  font-size: 1.55rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+  color: var(--text-primary);
+}
+
+
+/* Gradient Title */
+:root[data-theme="dark"] .about-grid .card h3 {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+:root[data-theme="light"] .about-grid .card h3 {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Card Text */
+.about-grid .card p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+/* -------------------------------------------------- */
+/*                LARGE DESKTOP                        */
+/* -------------------------------------------------- */
+
+@media (min-width: 1400px) {
+  .about-grid {
+    padding: 0 32px;
+  }
+}
+
+/* -------------------------------------------------- */
+/*                TABLET + MOBILE                      */
+/* -------------------------------------------------- */
+
+@media (max-width: 768px) {
+  .page-about {
+    padding: 50px 0;            /* MUCH smaller now */
+  }
+
+  .page-about .lead {
+    margin-bottom: 30px;
+    padding: 0 10px;
+    font-size: 0.95rem;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 0 14px;           /* tighter */
+  }
+
+  .about-grid .card {
+    padding: 24px;             /* smaller cards */
+  }
+
+  .about-grid .card h3 {
+    font-size: 1.35rem;
+  }
+
+  .about-grid .card p {
+    font-size: 0.95rem;
+  }
+}
+
+/* -------------------------------------------------- */
+/*               EXTRA SMALL DEVICES                   */
+/* -------------------------------------------------- */
+
+@media (max-width: 480px) {
+  .page-about {
+    padding: 40px 0;          /* no more tall divs */
+  }
+
+  .about-grid .card {
+    padding: 20px;           /* compact version */
+    border-radius: 12px;
+  }
+
+  .about-grid .card h3 {
+    font-size: 1.25rem;
+  }
+}

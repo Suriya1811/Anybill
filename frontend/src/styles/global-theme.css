@@ -1,0 +1,188 @@
+/* -------------------------------------------------- */
+/*                  GLOBAL THEME UI                   */
+/* -------------------------------------------------- */
+
+/* Root element color */
+#root {
+  color: var(--text-primary);
+}
+
+/* All text auto inherits theme color */
+* {
+  color: inherit;
+}
+
+/* Body */
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* Loading */
+.loading {
+  padding: 20px;
+  text-align: center;
+  color: var(--text-primary) !important;
+}
+
+/* Text elements */
+p, span, div, h1, h2, h3, h4, h5, h6, li, td, th, a, label {
+  color: var(--text-primary);
+}
+
+/* Text utilities */
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-tertiary { color: var(--text-tertiary); }
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary) !important;
+}
+
+/* Links */
+a {
+  color: var(--primary-color);
+  transition: 0.3s ease;
+}
+:root[data-theme="light"] a { color: var(--primary-dark); }
+:root[data-theme="dark"] a { color: var(--primary-light); }
+
+a:hover {
+  opacity: 0.8;
+}
+
+/* Strong text */
+strong, b {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* -------------------------------------------------- */
+/*                    INPUT FIELDS                    */
+/* -------------------------------------------------- */
+
+input, select, textarea {
+  color: var(--input-text) !important;
+  background: var(--input-bg) !important;
+  border-color: var(--input-border) !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--input-placeholder) !important;
+}
+
+/* Buttons */
+button {
+  color: inherit;
+}
+
+/* -------------------------------------------------- */
+/*                       CARDS                        */
+/* -------------------------------------------------- */
+
+.card, .dashboard-card, .form-card {
+  background: var(--bg-secondary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+/* -------------------------------------------------- */
+/*                       TABLES                       */
+/* -------------------------------------------------- */
+
+table { color: var(--text-primary); }
+
+th, td { color: var(--text-primary); }
+
+/* Dark mode table header */
+:root[data-theme="dark"] th {
+  background: var(--bg-tertiary);
+}
+
+/* -------------------------------------------------- */
+/*                  STATUS COLORS                     */
+/* -------------------------------------------------- */
+
+.status-paid { color: var(--success-color); }
+.status-pending { color: var(--warning-color); }
+.status-overdue { color: var(--error-color); }
+.status-draft { color: var(--text-tertiary); }
+
+/* Status badges */
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status-badge.status-paid {
+  background: var(--success-color) !important;
+  color: white !important;
+}
+
+.status-badge.status-pending {
+  background: var(--warning-color) !important;
+  color: white !important;
+}
+
+.status-badge.status-overdue {
+  background: var(--error-color) !important;
+  color: white !important;
+}
+
+.status-badge.status-draft {
+  background: var(--text-tertiary) !important;
+  color: white !important;
+}
+
+/* Dark mode status badges */
+:root[data-theme="dark"] .status-badge {
+  color: var(--text-inverse) !important;
+}
+
+/* -------------------------------------------------- */
+/*                 ACCESSIBILITY FOCUS                */
+/* -------------------------------------------------- */
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+:root[data-theme="dark"] button:focus-visible,
+:root[data-theme="dark"] a:focus-visible,
+:root[data-theme="dark"] input:focus-visible,
+:root[data-theme="dark"] select:focus-visible,
+:root[data-theme="dark"] textarea:focus-visible {
+  outline: 2px solid var(--primary-light);
+  box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.3);
+}
+
+/* -------------------------------------------------- */
+/*                  TEXT SELECTION                    */
+/* -------------------------------------------------- */
+
+::selection {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+/* -------------------------------------------------- */
+/*               THEME TRANSITION CLEAN               */
+/* -------------------------------------------------- */
+
+*:not(svg):not(path):not(rect):not(circle) {
+  transition: background-color 0.2s ease,
+              border-color 0.2s ease,
+              color 0.2s ease;
+}
